@@ -83,6 +83,7 @@ import {
   SidebarMenuItem,
 } from "~/components/ui/sidebar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
+import { memo } from "react";
 
 type NavT = {
   group: string;
@@ -92,13 +93,17 @@ type NavT = {
   } & (
     {
       url: string;
-      icon: React.ComponentType<any>;
+      icon?: React.ComponentType<any>;
+      component?: never;
     } | {
-      component: React.ComponentType<any>
+      component: React.ReactNode;
+      url?: never;
+      icon?: never;
     })
   )[];
 }
-// Menu items.
+
+
 const navItems: NavT[] = [
   {
     group: "Application",
@@ -106,13 +111,18 @@ const navItems: NavT[] = [
       { title: "Home", url: "#", icon: Home },
       { title: "Inbox", url: "#", icon: Inbox },
       { title: "Calendar", url: "#", icon: Calendar },
-      { title: "Search", url: "#", icon: Search },
+      { title: "Search", url: "#", icon: Search,
+                items: [
+          { title: "Profile", url: "#" },
+          { title: "Account", url: "#", icon: Inbox },
+        ],
+       },
       { 
         title: "Settings",
         url: "#",
         icon: Settings,
         items: [
-          { title: "Profile", url: "#", icon: Home },
+          { title: "Profile", url: "#" },
           { title: "Account", url: "#", icon: Inbox },
         ],
       },
@@ -120,37 +130,7 @@ const navItems: NavT[] = [
   },
 ]
 
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-]
-
 const AppSideBarMenuTest = () => {
-  // <Sidebar>
-  //   <SidebarContent>
   return (
     navItems.map((groupItem, i) => (
     <SidebarGroup key={i}>
@@ -158,48 +138,61 @@ const AppSideBarMenuTest = () => {
       <SidebarGroupContent>
         <SidebarMenu>
            {groupItem.items.map((item, i) => (
-            item.items?.length ? (
-              <Collapsible key={item.title + i} defaultOpen className="group/collapsible">
-                <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton>
-                      {item.icon && <item.icon />}
-                      <span>{item.title}</span>
-                      <ChevronRight className="ml-auto transition-transform duration-200 ease-in-out group-data-[state=open]/collapsible:rotate-90" />
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      {item.items.map((subItem) => (
-                        <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild>
-                            <a href={subItem.url}>
-                              <subItem.icon />
-                              <span>{subItem.title}</span>
-                            </a>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
-            ) : (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <a href={item.url}>
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            )
+             <SidebarItem key={i} item={item} />
           ))}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
     ))
   )
-  //   </SidebarContent>
-  // </Sidebar>
 }
+
+const SidebarItem = memo(({ item }: {item: NavT["items"][number]}) => {
+  if (item.items) {
+    return (
+      <Collapsible defaultOpen className="group/collapsible">
+        <SidebarMenuItem>
+          <CollapsibleTrigger asChild>
+            <SidebarMenuButton>
+              {item.component ? item.component : (
+                <>
+                  {item.icon && <item.icon />}
+                  <span>{item.title}</span>
+                  <ChevronRight className="ml-auto transition-transform duration-200 ease-in-out group-data-[state=open]/collapsible:rotate-90" />
+                </>
+              )}
+            </SidebarMenuButton>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
+            <SidebarMenuSub>
+              {item.items.map((subItem) => (
+                <SidebarMenuSubItem key={subItem.title}>
+                  <SidebarMenuSubButton asChild>
+                    {subItem.component ? subItem.component : (
+                      <a href={subItem.url}>
+                        {subItem.icon && <subItem.icon />}
+                        <span>{subItem.title}</span>
+                      </a>
+                    )}
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+              ))}
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </SidebarMenuItem>
+      </Collapsible>
+    )
+  }
+  return (
+    <SidebarMenuItem key={item.title}>
+      <SidebarMenuButton asChild>
+        {item.component ? item.component : (
+          <a href={item.url}>
+            {item.icon && <item.icon />}
+            <span>{item.title}</span>
+          </a>
+        )}
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  )
+});
