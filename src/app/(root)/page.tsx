@@ -18,7 +18,7 @@ export default async function Home(props: {
   const isSearchEnabled = searchParams.search !== undefined;
 
   return (
-    <div className="grid min-h-screen grid-rows-[auto,1fr]">
+    <div className="grid min-h-screen grid-rows-[auto_1fr]">
       <MainHeader />
       {isSearchEnabled && (
         <div className="block px-4 py-5 md:px-8 md:py-6 lg:hidden">

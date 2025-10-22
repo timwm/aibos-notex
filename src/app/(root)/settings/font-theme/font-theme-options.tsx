@@ -27,7 +27,7 @@ export const FontThemeOptions = () => {
         defaultValue={fontTheme}
         onValueChange={(value) => setFontTheme(value)}
       >
-        <Label className="grid w-full grid-cols-[auto,1fr,auto] items-center gap-4 rounded-xl border border-neutral-200 p-4 hover:bg-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-800">
+        <Label className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-4 rounded-xl border border-neutral-200 p-4 hover:bg-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-800">
           <div className="grid h-10 w-10 place-content-center rounded-xl border border-neutral-200 dark:border-neutral-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +53,7 @@ export const FontThemeOptions = () => {
           </div>
           <RadioGroupItem value="sans-serif" id="sans-serif" />
         </Label>
-        <Label className="grid w-full grid-cols-[auto,1fr,auto] items-center gap-4 rounded-xl border border-neutral-200 p-4 hover:bg-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-800">
+        <Label className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-4 rounded-xl border border-neutral-200 p-4 hover:bg-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-800">
           <div className="grid h-10 w-10 place-content-center rounded-xl border border-neutral-200 dark:border-neutral-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +79,7 @@ export const FontThemeOptions = () => {
           </div>
           <RadioGroupItem value="noto-serif" id="noto-serif" />
         </Label>
-        <Label className="grid w-full grid-cols-[auto,1fr,auto] items-center gap-4 rounded-xl border border-neutral-200 p-4 hover:bg-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-800">
+        <Label className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-4 rounded-xl border border-neutral-200 p-4 hover:bg-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-800">
           <div className="grid h-10 w-10 place-content-center rounded-xl border border-neutral-200 dark:border-neutral-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"

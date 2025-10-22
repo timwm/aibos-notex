@@ -22,7 +22,7 @@ export const ColorThemeOptions = () => {
         defaultValue={theme}
         onValueChange={(value) => setTheme(value)}
       >
-        <Label className="grid w-full grid-cols-[auto,1fr,auto] items-center gap-4 rounded-xl border border-neutral-200 p-4 hover:bg-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-800">
+        <Label className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-4 rounded-xl border border-neutral-200 p-4 hover:bg-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-800">
           <div className="grid h-10 w-10 place-content-center rounded-xl border border-neutral-200 dark:border-neutral-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +60,7 @@ export const ColorThemeOptions = () => {
           </div>
           <RadioGroupItem value="light" id="light" />
         </Label>
-        <Label className="grid w-full grid-cols-[auto,1fr,auto] items-center gap-4 rounded-xl border border-neutral-200 p-4 hover:bg-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-800">
+        <Label className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-4 rounded-xl border border-neutral-200 p-4 hover:bg-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-800">
           <div className="grid h-10 w-10 place-content-center rounded-xl border border-neutral-200 dark:border-neutral-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +86,7 @@ export const ColorThemeOptions = () => {
           </div>
           <RadioGroupItem value="dark" id="dark" />
         </Label>
-        {/* <Label className="grid grid-cols-[auto,1fr,auto] items-center gap-4 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4 hover:bg-neutral-200 dark:hover:bg-neutral-800">
+        {/* <Label className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-xl border border-neutral-200 dark:border-neutral-700 p-4 hover:bg-neutral-200 dark:hover:bg-neutral-800">
           <div className="grid h-10 w-10 place-content-center rounded-xl border border-neutral-200 dark:border-neutral-700">
             <Image src={"/images/icon-sun.svg"} alt="" width={24} height={24} />
           </div>

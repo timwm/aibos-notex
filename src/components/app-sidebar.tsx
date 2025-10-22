@@ -3,6 +3,10 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarTrigger,
 } from "~/components/ui/sidebar";
 
 import { AppSidebarMenu } from "./app-sidebar-menu";
@@ -15,9 +19,10 @@ export async function AppSidebar() {
 
   const uniqueTags = Array.from(new Set(tags.map((tag) => tag.name)));
   return (
-    <Sidebar className="border-3 border-blue-500 bg-neutral-0 dark:bg-neutral-950 dark:text-neutral-200">
+    <Sidebar collapsible="icon" className="bg-neutral-0 dark:bg-neutral-950 dark:text-neutral-200">
       <SidebarHeader className="bg-neutral-0 px-4 py-6 dark:bg-neutral-950 dark:text-neutral-200">
-        <Link href="/">
+        <div className="flex justify-between mb-3">
+          <Link href="/">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="95"
@@ -50,9 +55,12 @@ export async function AppSidebar() {
             </defs>
           </svg>
         </Link>
+        <SidebarTrigger className="-ml-1" />
+        </div>
       </SidebarHeader>
       <SidebarContent className="bg-neutral-0 px-4 dark:bg-neutral-950 dark:text-neutral-200">
-        <AppSidebarMenu />
+        {/* <AppSidebarMenu /> */}
+        <AppSideBarMenuTest/>
         <div className="mt-2 border-t border-neutral-200 py-2">
           <Tags tags={uniqueTags} />
         </div>
@@ -60,4 +68,138 @@ export async function AppSidebar() {
       <SidebarFooter />
     </Sidebar>
   );
+}
+
+import { Calendar, ChevronRight, Home, Inbox, Search, Settings } from "lucide-react"
+
+import {
+  // Sidebar,
+  // SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "~/components/ui/sidebar"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
+
+type NavT = {
+  group: string;
+  items: ({
+    title: string;
+    items?: NavT["items"];
+  } & (
+    {
+      url: string;
+      icon: React.ComponentType<any>;
+    } | {
+      component: React.ComponentType<any>
+    })
+  )[];
+}
+// Menu items.
+const navItems: NavT[] = [
+  {
+    group: "Application",
+    items: [
+      { title: "Home", url: "#", icon: Home },
+      { title: "Inbox", url: "#", icon: Inbox },
+      { title: "Calendar", url: "#", icon: Calendar },
+      { title: "Search", url: "#", icon: Search },
+      { 
+        title: "Settings",
+        url: "#",
+        icon: Settings,
+        items: [
+          { title: "Profile", url: "#", icon: Home },
+          { title: "Account", url: "#", icon: Inbox },
+        ],
+      },
+    ],
+  },
+]
+
+const items = [
+  {
+    title: "Home",
+    url: "#",
+    icon: Home,
+  },
+  {
+    title: "Inbox",
+    url: "#",
+    icon: Inbox,
+  },
+  {
+    title: "Calendar",
+    url: "#",
+    icon: Calendar,
+  },
+  {
+    title: "Search",
+    url: "#",
+    icon: Search,
+  },
+  {
+    title: "Settings",
+    url: "#",
+    icon: Settings,
+  },
+]
+
+const AppSideBarMenuTest = () => {
+  // <Sidebar>
+  //   <SidebarContent>
+  return (
+    navItems.map((groupItem, i) => (
+    <SidebarGroup key={i}>
+      {groupItem.group && <SidebarGroupLabel>{groupItem.group}</SidebarGroupLabel>}
+      <SidebarGroupContent>
+        <SidebarMenu>
+           {groupItem.items.map((item, i) => (
+            item.items?.length ? (
+              <Collapsible key={item.title + i} defaultOpen className="group/collapsible">
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton>
+                      {item.icon && <item.icon />}
+                      <span>{item.title}</span>
+                      <ChevronRight className="ml-auto transition-transform duration-200 ease-in-out group-data-[state=open]/collapsible:rotate-90" />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {item.items.map((subItem) => (
+                        <SidebarMenuSubItem key={subItem.title}>
+                          <SidebarMenuSubButton asChild>
+                            <a href={subItem.url}>
+                              <subItem.icon />
+                              <span>{subItem.title}</span>
+                            </a>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
+            ) : (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild>
+                  <a href={item.url}>
+                    <item.icon />
+                    <span>{item.title}</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+    ))
+  )
+  //   </SidebarContent>
+  // </Sidebar>
 }

@@ -51,7 +51,7 @@ export const DeleteBtn = ({ onDeleteBtn, isPending, className }: Props) => {
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="space-y-0">
-        <div className="grid grid-cols-[auto,1fr] items-start gap-4">
+        <div className="grid grid-cols-[auto_1fr] items-start gap-4">
           <div className="rounded-lg bg-neutral-100 p-2 dark:bg-neutral-800">
             <svg
               xmlns="http://www.w3.org/2000/svg"

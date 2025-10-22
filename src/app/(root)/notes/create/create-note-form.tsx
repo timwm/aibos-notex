@@ -72,7 +72,7 @@ export function CreateNoteForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="mb-14 grid flex-1 grid-rows-[auto,1fr,auto] border-neutral-200 lg:mb-0 lg:border-r"
+          className="mb-14 grid flex-1 grid-rows-[auto_1fr_auto] border-neutral-200 lg:mb-0 lg:border-r"
         >
           <div className="space-y-4 border-neutral-200 px-6 py-5 lg:border-b">
             <FormField

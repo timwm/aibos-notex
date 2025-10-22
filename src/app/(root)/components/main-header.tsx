@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SearchNotes } from "./search-notes";
+import { SidebarTrigger } from "~/components/ui/sidebar";
 
 type Props = {
   isArchive?: boolean;
@@ -9,6 +10,7 @@ type Props = {
 export const MainHeader = ({ isArchive, isSettings }: Props) => {
   return (
     <header className="hidden items-center justify-between border-b border-neutral-200 px-8 py-[18.5px] dark:border-neutral-700 lg:flex">
+      <SidebarTrigger className="-ml-1" />
       <h1 className="text-preset-1 dark:text-neutral-200">
         {isArchive ? "Archived Notes" : isSettings ? "Settings" : "All Notes"}
       </h1>

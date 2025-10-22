@@ -41,13 +41,13 @@ const App = () => {
 // MainContent.jsx
 const MainContent = () => {
   return (
-    <div className="grid grid-cols-[auto_1fr] min-h-screen bg-[var(--base-clr)] text-[var(--text-clr)]">
+    <div className="grid grid-cols-[auto_1fr] min-h-screen bg-(--base-clr) text-(--text-clr)">
       <Sidebar />
       <main className="p-[min(30px,7%)] md:p-8">
         {/* Section 1 */}
-        <div className="border border-[var(--line-clr)] rounded-xl mb-6 p-[min(3em,15%)]">
+        <div className="border border-(--line-clr) rounded-xl mb-6 p-[min(3em,15%)]">
           <h2 className="text-xl font-semibold mt-4">Hello World</h2>
-          <p className="text-[var(--secondary-text-clr)] mt-2 mb-4">
+          <p className="text-(--secondary-text-clr) mt-2 mb-4">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veritatis
             porro iure quaerat aliquam! Optio dolorum in eum provident, facilis
             error repellendus excepturi enim dolor deleniti adipisci consectetur
@@ -58,9 +58,9 @@ const MainContent = () => {
         </div>
 
         {/* Section 2 */}
-        <div className="border border-[var(--line-clr)] rounded-xl mb-6 p-[min(3em,15%)]">
+        <div className="border border-(--line-clr) rounded-xl mb-6 p-[min(3em,15%)]">
           <h2 className="text-xl font-semibold mt-4">Example Heading</h2>
-          <p className="text-[var(--secondary-text-clr)] mt-2 mb-4">
+          <p className="text-(--secondary-text-clr) mt-2 mb-4">
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Hic aliquid
             corrupti, tenetur fuga magnam necessitatibus blanditiis quod sint
             excepturi laborum esse alias labore molestias adipisci, nostrum
@@ -71,9 +71,9 @@ const MainContent = () => {
         </div>
 
         {/* Section 3 */}
-        <div className="border border-[var(--line-clr)] rounded-xl mb-6 p-[min(3em,15%)]">
+        <div className="border border-(--line-clr) rounded-xl mb-6 p-[min(3em,15%)]">
           <h2 className="text-xl font-semibold mt-4">Lorem Ipsum</h2>
-          <p className="text-[var(--secondary-text-clr)] mt-2 mb-4">
+          <p className="text-(--secondary-text-clr) mt-2 mb-4">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore
             repudiandae labore veniam reprehenderit voluptatum, laboriosam
             perferendis fuga, dolore quam quas nostrum totam sunt esse expedita.

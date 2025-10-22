@@ -31,7 +31,7 @@ const DropdownItem = ({ iconName, title, isActive, children }) => {
         className={buttonClasses}
       >
         <IconMap name={iconName} />
-        <span className="flex-grow">{title}</span>
+        <span className="grow">{title}</span>
         {/* Dropdown Arrow Icon */}
         <IconMap name="dropdown-arrow" className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''} md:block hidden`} />
       </button>
@@ -221,7 +221,7 @@ const IconMap = ({ name, className = '' }) => {
 
   // Merging tailwind classes with default icon size/color classes.
   // The original CSS sets default fill color via CSS variables.
-  const classes = twMerge('w-6 h-6 flex-shrink-0 fill-current', className);
+  const classes = twMerge('w-6 h-6 shrink-0 fill-current', className);
   
   return <Icon icon={iconName} className={classes} />;
 };
@@ -252,7 +252,7 @@ const SidebarC = () => {
 
   return (
     <nav
-      className={`bg-[var(--base-clr)] border-r border-[var(--line-clr)] 
+      className={`bg-(--base-clr) border-r border-(--line-clr) 
         transition-all duration-300 sticky top-0 h-screen overflow-hidden whitespace-nowrap
         ${isOpen ? "w-64 px-2" : "w-16 px-2"}`}
     >
@@ -264,7 +264,7 @@ const SidebarC = () => {
           </span>
           <button
             onClick={toggleSidebar}
-            className="ml-auto p-2 rounded hover:bg-[var(--hover-clr)]"
+            className="ml-auto p-2 rounded hover:bg-(--hover-clr)"
           >
             <Icon
               icon="mdi:chevron-double-left"
@@ -334,15 +334,15 @@ const SidebarC = () => {
 
 // const SidebarItemC = SidebarItem;
 const SidebarItemC = ({ href, icon, label, active, isOpen }) => (
-  <li className={`${active ? "text-[var(--accent-clr)]" : ""}`}>
+  <li className={`${active ? "text-(--accent-clr)" : ""}`}>
     <a
       href={href}
-      className="flex bg-blue-400 items-center gap-3 p-3 rounded hover:bg-[var(--hover-clr)]"
+      className="flex bg-blue-400 items-center gap-3 p-3 rounded hover:bg-(--hover-clr)"
     >
       <Icon
         icon={icon}
-        className={`flex-shrink-0 ${
-          active ? "text-[var(--accent-clr)]" : "text-[var(--text-clr)]"
+        className={`shrink-0 ${
+          active ? "text-(--accent-clr)" : "text-(--text-clr)"
         }`}
       />
       {/* {isOpen && <span>{label}</span>} */}
@@ -355,11 +355,11 @@ const SidebarDropdownC = ({ label, icon, items, isOpen, open, onClick }) => (
   <li>
     <button
       onClick={onClick}
-      className={`flex bg-red-400 items-center gap-3 p-3 rounded hover:bg-[var(--hover-clr)] w-ful-l ${isOpen ? "w-full-" : ""}`}
+      className={`flex bg-red-400 items-center gap-3 p-3 rounded hover:bg-(--hover-clr) w-ful-l ${isOpen ? "w-full-" : ""}`}
     >
-      <Icon icon={icon} className="text-[var(--text-clr)]" />
-      {/* {isOpen && <span className="flex-grow">{label}</span>} */}
-      <span className="flex-grow">{label}</span>
+      <Icon icon={icon} className="text-(--text-clr)" />
+      {/* {isOpen && <span className="grow">{label}</span>} */}
+      <span className="grow">{label}</span>
       <Icon
         icon="mdi:chevron-down"
         className={`flex-end transition-transform ${open ? "rotate-180" : ""}`}
@@ -375,7 +375,7 @@ const SidebarDropdownC = ({ label, icon, items, isOpen, open, onClick }) => (
           <li key={item}>
             <a
               href="#"
-              className="block pl-8 p-2 hover:bg-[var(--hover-clr)]"
+              className="block pl-8 p-2 hover:bg-(--hover-clr)"
             >
               {item}
             </a>

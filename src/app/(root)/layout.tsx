@@ -10,7 +10,7 @@ export default async function RootLayout({
     <>
     <SidebarProvider>
       <AppSidebar />
-      <main className="border-3 border-red-500 relative w-full dark:bg-neutral-950 dark:text-neutral-200">
+      <main className="relative w-full dark:bg-neutral-950 dark:text-neutral-200">
         {children}
       </main>
       <Toaster />
