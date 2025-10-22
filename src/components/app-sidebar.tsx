@@ -3,9 +3,6 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   SidebarTrigger,
 } from "~/components/ui/sidebar";
 
@@ -59,8 +56,8 @@ export async function AppSidebar() {
         </div>
       </SidebarHeader>
       <SidebarContent className="bg-neutral-0 px-4 dark:bg-neutral-950 dark:text-neutral-200">
-        {/* <AppSidebarMenu /> */}
-        <AppSideBarMenuTest/>
+        <AppSidebarMenu />
+        {/* <AppSideBarMenuTest/> */}
         <div className="mt-2 border-t border-neutral-200 py-2">
           <Tags tags={uniqueTags} />
         </div>
@@ -69,130 +66,3 @@ export async function AppSidebar() {
     </Sidebar>
   );
 }
-
-import { Calendar, ChevronRight, Home, Inbox, Search, Settings } from "lucide-react"
-
-import {
-  // Sidebar,
-  // SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "~/components/ui/sidebar"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
-import { memo } from "react";
-
-type NavT = {
-  group: string;
-  items: ({
-    title: string;
-    items?: NavT["items"];
-  } & (
-    {
-      url: string;
-      icon?: React.ComponentType<any>;
-      component?: never;
-    } | {
-      component: React.ReactNode;
-      url?: never;
-      icon?: never;
-    })
-  )[];
-}
-
-
-const navItems: NavT[] = [
-  {
-    group: "Application",
-    items: [
-      { title: "Home", url: "#", icon: Home },
-      { title: "Inbox", url: "#", icon: Inbox },
-      { title: "Calendar", url: "#", icon: Calendar },
-      { title: "Search", url: "#", icon: Search,
-                items: [
-          { title: "Profile", url: "#" },
-          { title: "Account", url: "#", icon: Inbox },
-        ],
-       },
-      { 
-        title: "Settings",
-        url: "#",
-        icon: Settings,
-        items: [
-          { title: "Profile", url: "#" },
-          { title: "Account", url: "#", icon: Inbox },
-        ],
-      },
-    ],
-  },
-]
-
-const AppSideBarMenuTest = () => {
-  return (
-    navItems.map((groupItem, i) => (
-    <SidebarGroup key={i}>
-      {groupItem.group && <SidebarGroupLabel>{groupItem.group}</SidebarGroupLabel>}
-      <SidebarGroupContent>
-        <SidebarMenu>
-           {groupItem.items.map((item, i) => (
-             <SidebarItem key={i} item={item} />
-          ))}
-        </SidebarMenu>
-      </SidebarGroupContent>
-    </SidebarGroup>
-    ))
-  )
-}
-
-const SidebarItem = memo(({ item }: {item: NavT["items"][number]}) => {
-  if (item.items) {
-    return (
-      <Collapsible defaultOpen className="group/collapsible">
-        <SidebarMenuItem>
-          <CollapsibleTrigger asChild>
-            <SidebarMenuButton>
-              {item.component ? item.component : (
-                <>
-                  {item.icon && <item.icon />}
-                  <span>{item.title}</span>
-                  <ChevronRight className="ml-auto transition-transform duration-200 ease-in-out group-data-[state=open]/collapsible:rotate-90" />
-                </>
-              )}
-            </SidebarMenuButton>
-          </CollapsibleTrigger>
-          <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-            <SidebarMenuSub>
-              {item.items.map((subItem) => (
-                <SidebarMenuSubItem key={subItem.title}>
-                  <SidebarMenuSubButton asChild>
-                    {subItem.component ? subItem.component : (
-                      <a href={subItem.url}>
-                        {subItem.icon && <subItem.icon />}
-                        <span>{subItem.title}</span>
-                      </a>
-                    )}
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-              ))}
-            </SidebarMenuSub>
-          </CollapsibleContent>
-        </SidebarMenuItem>
-      </Collapsible>
-    )
-  }
-  return (
-    <SidebarMenuItem key={item.title}>
-      <SidebarMenuButton asChild>
-        {item.component ? item.component : (
-          <a href={item.url}>
-            {item.icon && <item.icon />}
-            <span>{item.title}</span>
-          </a>
-        )}
-      </SidebarMenuButton>
-    </SidebarMenuItem>
-  )
-});

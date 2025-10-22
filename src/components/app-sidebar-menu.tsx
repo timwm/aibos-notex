@@ -2,10 +2,26 @@
 import { usePathname } from "next/navigation";
 
 import Link from "next/link";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
+// import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "./ui/sidebar";
 import { cn } from "~/lib/utils";
+import { Calendar, ChevronRight, Home, Inbox, Search, Settings } from "lucide-react"
+import {
+  // Sidebar,
+  // SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+} from "~/components/ui/sidebar"
+import { Collapsible, CollapsibleContent, CollapsibleProps, CollapsibleTrigger } from "@radix-ui/react-collapsible";
+import { memo, useState } from "react";
 
-export const AppSidebarMenu = () => {
+export const AppSidebarMenuT = () => {
   const pathname = usePathname();
   const items = [
     {
@@ -116,3 +132,132 @@ export const AppSidebarMenu = () => {
     </SidebarMenu>
   );
 };
+
+type NavT = {
+  group: string;
+  items: ({
+    title: string;
+    items?: NavT["items"];
+  } & (
+    {
+      url: string;
+      icon?: React.ComponentType<any>;
+      component?: never;
+    } | {
+      component: React.ReactNode;
+      url?: never;
+      icon?: never;
+    })
+  )[];
+}
+
+const navItems: NavT[] = [
+  {
+    group: "Application",
+    items: [
+      { title: "Home", url: "#", icon: Home },
+      { title: "Inbox", url: "#", icon: Inbox },
+      { title: "Calendar", url: "#", icon: Calendar },
+      { title: "Search", url: "#", icon: Search,
+                items: [
+          { title: "Profile", url: "#" },
+          { title: "Account", url: "#", icon: Inbox },
+        ],
+       },
+      { 
+        title: "Settings",
+        url: "#",
+        icon: Settings,
+        items: [
+          { title: "Profile", url: "#" },
+          { title: "Account", url: "#", icon: Inbox },
+        ],
+      },
+    ],
+  },
+]
+
+export const AppSidebarMenu = () => {
+  const [openItem, setOpenItem] = useState<string | null>(null);
+
+  return (
+    navItems.map((groupItem, i) => (
+    <SidebarGroup key={i}>
+      {groupItem.group && <SidebarGroupLabel>{groupItem.group}</SidebarGroupLabel>}
+      <SidebarGroupContent>
+        <SidebarMenu>
+            {groupItem.items.map((item, i) => (
+              <SidebarItem
+                key={i}
+                item={item}
+                isCollapsed={openItem === item.title}
+                setCollapsedItem={setOpenItem}
+              />
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+    ))
+  )
+}
+
+type SidebarItemProps = {
+  item: NavT["items"][number];
+  isCollapsed: boolean;
+  setCollapsedItem: (title: string | null) => void;
+}
+
+const SidebarItem = memo(({ item, isCollapsed, setCollapsedItem }: SidebarItemProps) => {
+  if (item.items) {
+    return (
+      <Collapsible
+        defaultOpen
+        className="group/collapsible"
+        open={isCollapsed}
+        onOpenChange={(open) => setCollapsedItem(open ? item.title : null)}
+      >
+        <SidebarMenuItem>
+          <CollapsibleTrigger asChild>
+            <SidebarMenuButton>
+              {item.component ? item.component : (
+                <>
+                  {item.icon && <item.icon />}
+                  <span>{item.title}</span>
+                  <ChevronRight className="ml-auto transition-transform duration-200 ease-in-out group-data-[state=open]/collapsible:rotate-90" />
+                </>
+              )}
+            </SidebarMenuButton>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
+            <SidebarMenuSub>
+              {item.items.map((subItem) => (
+                <SidebarMenuSubItem key={subItem.title}>
+                  <SidebarMenuSubButton asChild>
+                    {subItem.component ? subItem.component : (
+                      <a href={subItem.url}>
+                        {subItem.icon && <subItem.icon />}
+                        <span>{subItem.title}</span>
+                      </a>
+                    )}
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+              ))}
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </SidebarMenuItem>
+      </Collapsible>
+    )
+  }
+  return (
+    <SidebarMenuItem key={item.title}>
+      <SidebarMenuButton asChild>
+        {item.component ? item.component : (
+          <a href={item.url}>
+            {item.icon && <item.icon />}
+            <span>{item.title}</span>
+          </a>
+        )}
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  )
+});
