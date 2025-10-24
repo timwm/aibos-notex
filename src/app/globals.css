@@ -95,6 +95,31 @@
   
 }
 
+@layer utilities {
+  .border-gradient::after,
+  .border-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: -3px; /* simulate border thickness */
+    border-radius: inherit;
+    background-image: conic-gradient(
+      from var(--angle),
+      #ff4545,
+      #00ff99,
+      #006aff,
+      #ff0095,
+      #ff4545
+    );
+    animation: spin 3s linear infinite;
+    z-index: -1;
+  }
+  .border-gradient::before {
+    filter: blur(1.5rem);
+    opacity: 0.5;
+  }
+}
+
 :root {
   --radius: 0.625rem;
   --card: oklch(1 0 0);

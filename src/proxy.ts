@@ -1,4 +1,3 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { type NextRequest } from "next/server";
 
 import { updateSession } from "~/utils/supabase/middleware";
@@ -6,14 +5,6 @@ import { updateSession } from "~/utils/supabase/middleware";
 export async function proxy(request: NextRequest) {
   return await updateSession(request);
 }
-
-const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);
-
-export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    await auth.protect();
-  }
-});
 
 export const config = {
   matcher: [

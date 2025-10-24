@@ -1,22 +1,28 @@
 "use server";
 
-import { db } from "~/db";
-import { notesTable, tagsTable, usersTable } from "~/db/schema";
-import { currentUser } from "@clerk/nextjs/server";
+// import { currentUser } from "@clerk/nextjs/server";
 import { and, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { cache } from "react";
+import { User } from "@supabase/supabase-js";
 
-export const getAllNotes = cache(async () => {
-  const user = await currentUser();
+import { notesTable, tagsTable, usersTable } from "~/db/schema";
+import { db } from "~/db";
 
-  if (!user) {
-    throw new Error("User not found");
+export const getAllNotes = cache(async (userId: string) => {
+  // const user = await currentUser();
+
+  // if (!user) {
+  //   throw new Error("User not found");
+  // }
+
+  if (!userId) {
+    throw new Error(`Invalid User ID: ${userId}`);
   }
 
   const notesData = await db.query.notesTable.findMany({
-    where: eq(notesTable.userId, user.id),
+    where: eq(notesTable.userId, userId),
     with: {
       tags: true,
     },
@@ -29,12 +35,12 @@ export const getAllNotes = cache(async () => {
   return notesData;
 });
 
-export const getNotesByTag = cache(async (tag: string) => {
-  const user = await currentUser();
+export const getNotesByTag = cache(async (tag: string, user: User) => {
+  // const user = await currentUser();
 
-  if (!user) {
-    throw new Error("User not found");
-  }
+  // if (!user) {
+  //   throw new Error("User not found");
+  // }
 
   const notesData = await db.query.tagsTable.findMany({
     where: and(eq(tagsTable.userId, user.id), eq(tagsTable.name, tag)),
@@ -50,11 +56,15 @@ export const getNotesByTag = cache(async (tag: string) => {
   return notesData;
 });
 
-export const searchNotes = cache(async (query: string) => {
-  const user = await currentUser();
+export const searchNotes = cache(async (query: string, user?: User) => {
+  // const user = await currentUser();
+
+  // if (!user) {
+  //   throw new Error("User not found");
+  // }
 
   if (!user) {
-    throw new Error("User not found");
+    throw new Error(`Invalid User: ${user}`);
   }
 
   const notesData = await db.select().from(notesTable).where(sql`(
@@ -70,12 +80,12 @@ export const searchNotes = cache(async (query: string) => {
   return notesData;
 });
 
-export const getNote = cache(async (id: number) => {
-  const user = await currentUser();
+export const getNote = cache(async (id: number, user: User) => {
+  // const user = await currentUser();
 
-  if (!user) {
-    throw new Error("User not found");
-  }
+  // if (!user) {
+  //   throw new Error("User not found");
+  // }
 
   const noteData = await db.query.notesTable.findFirst({
     where: and(eq(notesTable.userId, user.id), eq(notesTable.id, id)),
@@ -91,12 +101,12 @@ export const getNote = cache(async (id: number) => {
   return noteData;
 });
 
-export async function archiveNote(noteId: number) {
-  const user = await currentUser();
+export async function archiveNote(noteId: number, user: User) {
+  // const user = await currentUser();
 
-  if (!user) {
-    throw new Error("User not found");
-  }
+  // if (!user) {
+  //   throw new Error("User not found");
+  // }
 
   await db
     .update(notesTable)
@@ -108,12 +118,12 @@ export async function archiveNote(noteId: number) {
   revalidatePath("/notes");
 }
 
-export async function unarchiveNote(noteId: number) {
-  const user = await currentUser();
+export async function unarchiveNote(noteId: number, user: User) {
+  // const user = await currentUser();
 
-  if (!user) {
-    throw new Error("User not found");
-  }
+  // if (!user) {
+  //   throw new Error("User not found");
+  // }
 
   await db
     .update(notesTable)
@@ -125,12 +135,12 @@ export async function unarchiveNote(noteId: number) {
   revalidatePath("/notes");
 }
 
-export async function deleteNote(noteId: number) {
-  const user = await currentUser();
+export async function deleteNote(noteId: number, user: User) {
+  // const user = await currentUser();
 
-  if (!user) {
-    throw new Error("User not found");
-  }
+  // if (!user) {
+  //   throw new Error("User not found");
+  // }
 
   await db
     .delete(notesTable)
@@ -140,12 +150,12 @@ export async function deleteNote(noteId: number) {
   redirect("/");
 }
 
-export const getAllTags = cache(async () => {
-  const user = await currentUser();
+export const getAllTags = cache(async (user: User) => {
+  // const user = await currentUser();
 
-  if (!user) {
-    throw new Error("User not found");
-  }
+  // if (!user) {
+  //   throw new Error("User not found");
+  // }
 
   const tagsData = await db.query.tagsTable.findMany({
     where: eq(tagsTable.userId, user.id),
@@ -158,31 +168,38 @@ export const getAllTags = cache(async () => {
   return tagsData;
 });
 
-export async function addNote({
-  title,
-  content,
-  allTags,
-}: {
-  title: string;
-  content: string;
-  allTags: string[];
-}) {
-  const user = await currentUser();
+export async function addNote(
+  {
+    title,
+    content,
+    allTags,
+  }: {
+    title: string;
+    content: string;
+    allTags: string[];
+  },
+  user: User,
+) {
+  // const user = await currentUser();
 
-  if (!user) {
-    throw new Error("User not found");
-  }
+  // if (!user) {
+  //   throw new Error("User not found");
+  // }
 
   const noteUser = await db.query.usersTable.findFirst({
     where: eq(usersTable.userId, user.id),
   });
 
+  // TODO: fix user creation logic
+  // if (!noteUser) {
+  //   await db.insert(usersTable).values({
+  //     userId: user.id!,
+  //     email: user.emailAddresses[0].emailAddress!,
+  //     username: user.username!,
+  //   });
+  // }
   if (!noteUser) {
-    await db.insert(usersTable).values({
-      userId: user.id!,
-      email: user.emailAddresses[0].emailAddress!,
-      username: user.username!,
-    });
+    throw new Error("User not found");
   }
 
   const noteData = await db
@@ -210,22 +227,25 @@ export async function addNote({
   redirect(`/notes/${noteData[0].insertedId}`);
 }
 
-export async function updateNote({
-  id,
-  title,
-  content,
-  allTags,
-}: {
-  id: number;
-  title: string;
-  content: string;
-  allTags: string[];
-}) {
-  const user = await currentUser();
+export async function updateNote(
+  {
+    id,
+    title,
+    content,
+    allTags,
+  }: {
+    id: number;
+    title: string;
+    content: string;
+    allTags: string[];
+  },
+  user: User,
+) {
+  // const user = await currentUser();
 
-  if (!user) {
-    throw new Error("User not found");
-  }
+  // if (!user) {
+  //   throw new Error("User not found");
+  // }
 
   await db
     .update(notesTable)

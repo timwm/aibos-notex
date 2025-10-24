@@ -1,7 +1,12 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-import { ERROR_URL, LOGIN_URL, SIGNUP_URL } from "~/lib/constants";
+import {
+  ERROR_URL,
+  LOGIN_URL,
+  SIGNUP_URL,
+  NEXT_PARAM_KEY,
+} from "~/lib/constants";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -52,7 +57,7 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
 
     url.pathname = LOGIN_URL;
-    url.searchParams.set("next", request.nextUrl.pathname);
+    url.searchParams.set(NEXT_PARAM_KEY, request.nextUrl.pathname);
 
     return NextResponse.redirect(url);
   }

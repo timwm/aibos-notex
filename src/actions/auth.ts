@@ -1,59 +1,95 @@
-'use server'
+"use server";
 
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
+import { revalidatePath } from "next/cache";
+import { type SignOut as SignOutScope } from "@supabase/supabase-js";
 
-import { createClient } from '~/utils/supabase/server'
-import { HOME_URL, ERROR_URL } from '~/lib/constants'
+import { createClient } from "~/utils/supabase/server";
+import {
+  type LoginSchemaT,
+  type SignupSchemaT,
+  loginSchema,
+  signupSchema,
+  safeParse,
+} from "~/lib/schema";
+// import { sleep } from "~/lib/utils";
 
-export async function login(formData: FormData) {
-  const supabase = await createClient()
-
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  }
-
-  const { error } = await supabase.auth.signInWithPassword(data)
+export async function getUserSession() {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.getUser();
 
   if (error) {
-    redirect(ERROR_URL)
+    return { error, user: null };
   }
 
-  revalidatePath('/', 'layout')
-  redirect(HOME_URL)
+  return { status: "success", ...(data || {}) };
+}
+
+export async function login(formData: FormData) {
+  const supabase = await createClient();
+  const credentials = {
+    email: formData.get("email"),
+    password: formData.get("password"),
+  } as LoginSchemaT;
+  const [parsedErrors, parsedData] = safeParse(loginSchema, credentials);
+
+  if (parsedErrors) {
+    return { error: { fieldErrors: parsedErrors } };
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword(parsedData);
+
+  if (error) {
+    // redirect(ERROR_URL);
+    return { error };
+  }
+  revalidatePath("/", "layout");
+
+  return { status: "success", data };
 }
 
 export async function signup(formData: FormData) {
-  const supabase = await createClient()
+  const supabase = await createClient();
+  const credentials = {
+    username: formData.get("username"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    confirm: formData.get("password"),
+  } as SignupSchemaT;
+  const [parsedErrors, parsedData] = safeParse(signupSchema, credentials);
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
+  if (parsedErrors) {
+    return { error: { fieldErrors: parsedErrors } };
   }
 
-  const { error } = await supabase.auth.signUp(data)
+  const { data, error } = await supabase.auth.signUp({
+    email: parsedData.email,
+    password: parsedData.password,
+    options: {
+      data: {
+        username: parsedData.username,
+      },
+    },
+  });
 
   if (error) {
-    redirect(ERROR_URL)
+    // redirect(ERROR_URL);
+    return { error };
   }
+  revalidatePath("/", "layout");
 
-  revalidatePath('/', 'layout')
-  redirect(HOME_URL)
+  return { status: "success", data };
 }
 
-export async function signOut() {
-  const supabase = await createClient()
-  const { error } = await supabase.auth.signOut()
+export async function signOut(scope?: SignOutScope) {
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signOut(scope);
 
   if (error) {
-    redirect(ERROR_URL)
+    // redirect(ERROR_URL);
+    return { error };
   }
+  revalidatePath("/", "layout");
 
-  revalidatePath('/', 'layout')
-  redirect(HOME_URL)
+  // redirect(HOME_URL);
+  return { status: "success" };
 }
