@@ -8,7 +8,7 @@ export default function NotesLayout({
     <div className="grid min-h-screen lg:grid-rows-[auto_1fr]">
       <MainHeader isArchive />
       <div className="grid h-full lg:grid-cols-[auto_1fr]">
-        <Notes className="hidden lg:block" isArchive />
+        <Notes isArchive className="hidden lg:block" />
         <div className="flex flex-col">{children}</div>
       </div>
     </div>

@@ -29,8 +29,8 @@ export default function SignupForm() {
     resolver: zodResolver(signupSchema),
     defaultValues: {
       username: "",
-      email: "yitehah157@foxroids.com",
-      password: "123",
+      email: "",
+      password: "",
       confirm: "",
     },
   });

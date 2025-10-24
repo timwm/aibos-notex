@@ -34,30 +34,30 @@ export const UnarchiveBtn = ({
           variant="outline"
         >
           <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
             fill="none"
+            height="24"
             viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              stroke="#0E121B"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="1.5"
               className="dark:stroke-neutral-200"
               d="M21 7.782v8.435C21 19.165 18.919 21 15.974 21H8.026C5.081 21 3 19.165 3 16.216V7.782C3 4.834 5.081 3 8.026 3h7.948C18.919 3 21 4.843 21 7.782Z"
-            />
-            <path
               stroke="#0E121B"
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="1.5"
+            />
+            <path
               className="dark:stroke-neutral-200"
               d="m15 14-3.002 3L9 14M11.998 17v-7M20.934 7H3.059"
+              stroke="#0E121B"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="1.5"
             />
           </svg>
-          <span className="text-preset-4 hidden text-neutral-950 dark:text-white lg:block">
+          <span className="text-preset-4 hidden text-neutral-950 lg:block dark:text-white">
             Unarchive Note
           </span>
         </Button>
@@ -66,27 +66,27 @@ export const UnarchiveBtn = ({
         <div className="grid grid-cols-[auto_1fr] items-start gap-4">
           <div className="rounded-lg bg-neutral-100 p-2 dark:bg-neutral-800">
             <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
               fill="none"
+              height="24"
               viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                stroke="#0E121B"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.5"
                 className="dark:stroke-neutral-200"
                 d="M21 7.782v8.435C21 19.165 18.919 21 15.974 21H8.026C5.081 21 3 19.165 3 16.216V7.782C3 4.834 5.081 3 8.026 3h7.948C18.919 3 21 4.843 21 7.782Z"
-              />
-              <path
                 stroke="#0E121B"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="1.5"
+              />
+              <path
                 className="dark:stroke-neutral-200"
                 d="m15 14-3.002 3L9 14M11.998 17v-7M20.934 7H3.059"
+                stroke="#0E121B"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
               />
             </svg>
           </div>
@@ -106,9 +106,9 @@ export const UnarchiveBtn = ({
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
-            onClick={onUnarchiveBtn}
-            disabled={isPending}
             className="bg-blue-500 dark:text-white"
+            disabled={isPending}
+            onClick={onUnarchiveBtn}
           >
             Unarchive Note
           </AlertDialogAction>

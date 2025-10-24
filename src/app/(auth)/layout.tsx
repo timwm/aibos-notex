@@ -2,12 +2,12 @@ import BorderAnimation from "~/components/border-animation";
 
 const credentials = [
   {
-    email: "test1@example.com",
-    password: "password1",
+    email: "yitehah157@foxroids.com",
+    password: "yitehah157@foxroids.com",
   },
   {
-    email: "test2@example.com",
-    password: "password2",
+    email: "dobox25109@nrlord.com",
+    password: "dobox25109@nrlord.com",
   },
 ];
 

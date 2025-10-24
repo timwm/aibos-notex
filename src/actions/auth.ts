@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { type SignOut as SignOutScope } from "@supabase/supabase-js";
+import { cache } from "react";
 
 import { createClient } from "~/utils/supabase/server";
 import {
@@ -13,7 +14,7 @@ import {
 } from "~/lib/schema";
 // import { sleep } from "~/lib/utils";
 
-export async function getUserSession() {
+export const getUserSession = cache(async () => {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
 
@@ -22,7 +23,7 @@ export async function getUserSession() {
   }
 
   return { status: "success", ...(data || {}) };
-}
+});
 
 export async function login(formData: FormData) {
   const supabase = await createClient();

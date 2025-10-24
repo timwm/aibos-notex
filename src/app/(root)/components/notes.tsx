@@ -1,8 +1,11 @@
+import type { NotesWithTags } from "~/types";
 import { getAllNotes } from "~/actions/notes";
-import { AllNotes } from "./all-notes";
-import { CreateNoteBtn } from "./create-note-btn";
 import { cn } from "~/lib/utils";
-import { NotesWithTags } from "~/types";
+import ErrorFallback from "~/components/error-fallback";
+import { getUserSession } from "~/actions/auth";
+
+import { CreateNoteBtn } from "./create-note-btn";
+import { AllNotes } from "./all-notes";
 
 type Props = {
   className?: string;
@@ -10,7 +13,8 @@ type Props = {
 };
 
 export const Notes = async ({ className, isArchive }: Props) => {
-  const notes = await getAllNotes();
+  const { error, user } = await getUserSession();
+  const notes = error ? [] : await getAllNotes(user);
 
   let filteredNotes: NotesWithTags[];
 
@@ -23,13 +27,15 @@ export const Notes = async ({ className, isArchive }: Props) => {
   return (
     <div
       className={cn(
-        "h-full border-neutral-200 px-4 pt-5 dark:border-neutral-700 md:px-8 lg:w-[290px] lg:border-r",
+        "h-full border-neutral-200 px-4 pt-5 md:px-8 lg:w-[290px] lg:border-r dark:border-neutral-700",
         className,
       )}
     >
       {!isArchive && <CreateNoteBtn />}
       {filteredNotes.length > 0 ? (
-        <AllNotes notes={filteredNotes} isArchive={isArchive} />
+        <ErrorFallback isError={!!error}>
+          <AllNotes isArchive={isArchive} notes={filteredNotes} />
+        </ErrorFallback>
       ) : (
         <p className="text-preset-5 rounded-lg bg-neutral-200 p-2 text-neutral-950">
           You don&amp;t have any notes yet. Start a new note to capture your

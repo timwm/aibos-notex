@@ -1,8 +1,9 @@
 "use client";
 import { useParams, useSearchParams } from "next/navigation";
-import { NotesWithTags } from "~/types";
 import { format } from "date-fns";
 import Link from "next/link";
+
+import { NotesWithTags } from "~/types";
 import { cn } from "~/lib/utils";
 
 type Props = {
@@ -29,11 +30,13 @@ export const AllNotes = ({ notes, isArchive }: Props) => {
 
     if (!activeTag && query) {
       const title = note.title.toLowerCase().includes(query.toLowerCase());
+
       if (title) {
         return true;
       }
 
       const content = note.content.toLowerCase().includes(query.toLowerCase());
+
       if (content) {
         return true;
       }
@@ -41,6 +44,7 @@ export const AllNotes = ({ notes, isArchive }: Props) => {
       const tag = note.tags.some((tag) =>
         tag.name.toLowerCase().includes(query.toLowerCase()),
       );
+
       if (tag) {
         return true;
       }
@@ -53,14 +57,15 @@ export const AllNotes = ({ notes, isArchive }: Props) => {
     <div className="divide-y divide-neutral-200 dark:divide-neutral-800">
       {filteredNotes.map((note) => {
         const active = params.noteId === note.id.toString();
+
         return (
           <Link
-            href={isArchive ? `/archives/${note.id}` : `/notes/${note.id}`}
             key={note.id}
             className={cn(
               "block space-y-3 rounded-md p-2",
               active && "bg-neutral-100 dark:bg-neutral-800",
             )}
+            href={isArchive ? `/archives/${note.id}` : `/notes/${note.id}`}
           >
             <p className="text-preset-3">{note.title}</p>
             <div className="flex flex-wrap gap-1">

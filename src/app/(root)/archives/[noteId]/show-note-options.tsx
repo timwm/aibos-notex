@@ -15,8 +15,8 @@ export const ShowNoteOptions = ({
 }: Props) => {
   return (
     <div className="hidden max-w-[258px] space-y-3 px-4 py-5 lg:block">
-      <UnarchiveBtn onUnarchiveBtn={onUnarchiveBtn} isPending={isPending} />
-      <DeleteBtn onDeleteBtn={onDeleteBtn} isPending={isPending} />
+      <UnarchiveBtn isPending={isPending} onUnarchiveBtn={onUnarchiveBtn} />
+      <DeleteBtn isPending={isPending} onDeleteBtn={onDeleteBtn} />
     </div>
   );
 };

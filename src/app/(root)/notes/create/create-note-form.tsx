@@ -4,6 +4,8 @@ import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import Image from "next/image";
+import { toast } from "sonner";
 
 import { Button } from "~/components/ui/button";
 import {
@@ -14,10 +16,10 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import Image from "next/image";
 import { Textarea } from "~/components/ui/textarea";
 import { addNote } from "~/actions/notes";
-import { toast } from "sonner";
+import ErrorFallback from "~/components/error-fallback";
+import { useAuth } from "~/providers/auth-provider";
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
@@ -36,6 +38,13 @@ export function CreateNoteForm() {
       content: "",
     },
   });
+  const { isAuthenticated, isLoading, user } = useAuth();
+
+  if (isLoading) {
+    return <>Loading....</>;
+  } else if (!isAuthenticated || !user) {
+    return <ErrorFallback isError={true} />;
+  }
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -44,22 +53,25 @@ export function CreateNoteForm() {
 
       const tagsArray = tags.split(",").map((tag) => tag.trim());
 
-      console.log(tagsArray);
-      console.log(title, content);
+      console.log(tagsArray); // eslint-disable-line no-console
+      console.log(title, content); // eslint-disable-line no-console
 
-      await addNote({
-        title,
-        content,
-        allTags: tagsArray,
-      });
+      await addNote(
+        {
+          title,
+          content,
+          allTags: tagsArray,
+        },
+        user!,
+      );
 
       toast.success(
         <div className="text-preset-6 flex w-[274px] items-center gap-2 text-neutral-950 md:w-[390px]">
           <Image
-            src={"/images/icon-checkmark.svg"}
             alt=""
-            width={24}
             height={24}
+            src={"/images/icon-checkmark.svg"}
+            width={24}
           />
           Note saved successfully!
         </div>,
@@ -71,8 +83,8 @@ export function CreateNoteForm() {
     <div className="flex flex-1">
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
           className="mb-14 grid flex-1 grid-rows-[auto_1fr_auto] border-neutral-200 lg:mb-0 lg:border-r"
+          onSubmit={form.handleSubmit(onSubmit)}
         >
           <div className="space-y-4 border-neutral-200 px-6 py-5 lg:border-b">
             <FormField
@@ -82,9 +94,9 @@ export function CreateNoteForm() {
                 <FormItem>
                   <FormControl className="text-preset-1 text-neutral-950">
                     <Input
+                      className="text-preset-1 border-0 shadow-none dark:text-white"
                       disabled={isPending}
                       placeholder="Enter a title..."
-                      className="text-preset-1 border-0 shadow-none dark:text-white"
                       {...field}
                     />
                   </FormControl>
@@ -96,11 +108,11 @@ export function CreateNoteForm() {
               <div className="flex items-center gap-2">
                 <div className="flex w-[115px] items-center gap-2">
                   <Image
-                    src={"/images/icon-tag.svg"}
                     alt=""
-                    width={24}
-                    height={24}
                     className="h-4 w-4"
+                    height={24}
+                    src={"/images/icon-tag.svg"}
+                    width={24}
                   />
                   <p className="text-preset-5 text-neutral-700">Tags</p>
                 </div>
@@ -111,9 +123,9 @@ export function CreateNoteForm() {
                     <FormItem className="text-preset-5 flex-1 text-neutral-950">
                       <FormControl>
                         <Input
+                          className="text-preset-5 border-0 shadow-none dark:text-white"
                           disabled={isPending}
                           placeholder="Add tags separated by commas (e.g. Work, Planning)"
-                          className="text-preset-5 border-0 shadow-none dark:text-white"
                           {...field}
                         />
                       </FormControl>
@@ -125,11 +137,11 @@ export function CreateNoteForm() {
               <div className="flex items-center gap-2">
                 <div className="flex w-[115px] items-center gap-2">
                   <Image
-                    src={"/images/icon-clock.svg"}
                     alt=""
-                    width={24}
-                    height={24}
                     className="h-4 w-4"
+                    height={24}
+                    src={"/images/icon-clock.svg"}
+                    width={24}
                   />
                   <p className="text-preset-5 text-neutral-700">Last Edited</p>
                 </div>
@@ -147,8 +159,8 @@ export function CreateNoteForm() {
                 <FormItem className="text-preset-5 h-full text-neutral-950">
                   <FormControl>
                     <Textarea
+                      className="text-preset-5 h-full resize-none border-0 whitespace-pre-line text-neutral-800 shadow-none dark:text-white"
                       disabled={isPending}
-                      className="text-preset-5 h-full resize-none whitespace-pre-line border-0 text-neutral-800 shadow-none dark:text-white"
                       placeholder="Start typing your note here..."
                       {...field}
                     />
@@ -159,13 +171,13 @@ export function CreateNoteForm() {
             />
           </div>
           <div className="border-t border-neutral-200 px-6 py-5">
-            <Button type="submit" className="block">
+            <Button className="block" type="submit">
               Submit
             </Button>
           </div>
         </form>
       </Form>
-      <div className="hidden w-[258px] space-y-3 px-4 py-5 lg:block"></div>
+      <div className="hidden w-[258px] space-y-3 px-4 py-5 lg:block" />
     </div>
   );
 }

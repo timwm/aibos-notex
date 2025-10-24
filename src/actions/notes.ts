@@ -10,19 +10,15 @@ import { User } from "@supabase/supabase-js";
 import { notesTable, tagsTable, usersTable } from "~/db/schema";
 import { db } from "~/db";
 
-export const getAllNotes = cache(async (userId: string) => {
+export const getAllNotes = cache(async (user: User) => {
   // const user = await currentUser();
 
   // if (!user) {
   //   throw new Error("User not found");
   // }
 
-  if (!userId) {
-    throw new Error(`Invalid User ID: ${userId}`);
-  }
-
   const notesData = await db.query.notesTable.findMany({
-    where: eq(notesTable.userId, userId),
+    where: eq(notesTable.userId, user.id),
     with: {
       tags: true,
     },

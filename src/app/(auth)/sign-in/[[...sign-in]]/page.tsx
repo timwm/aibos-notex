@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { Form } from "~/components/ui/form";
 import { Button } from "~/components/ui/button";
@@ -13,8 +13,6 @@ import { Mail, Lock } from "~/components/icons";
 import { login } from "~/actions/auth";
 import { type LoginSchemaT, loginSchema } from "~/lib/schema";
 import { SIGNUP_URL, AUTH_REDIRECT_URL } from "~/lib/constants";
-import { parseUrl } from "~/lib/utils";
-import { useAuth } from "~/providers/auth-provider";
 
 type ServerError = {
   fieldErrors?: Partial<Record<keyof LoginSchemaT, string[]>>;
@@ -25,20 +23,11 @@ export default function LoginForm() {
   const router = useRouter();
   const [serverError, setServerError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { isAuthenticated } = useAuth();
 
   const form = useForm<LoginSchemaT>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "yitehah157@foxroids.com", password: "pass1212" },
+    defaultValues: { email: "", password: "" },
   });
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      const { next } = parseUrl(window.location.href, AUTH_REDIRECT_URL);
-
-      router.push(next);
-    }
-  }, [isAuthenticated, router]);
 
   const onSubmit = async (values: LoginSchemaT) => {
     try {
@@ -74,7 +63,7 @@ export default function LoginForm() {
     } finally {
       setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-[600px] flex-col items-center justify-center space-y-8 rounded-3xl border-4 bg-white p-8 text-center md:max-w-[600px] lg:mx-0 lg:max-w-5/12 lg:rounded-none lg:rounded-r-3xl">

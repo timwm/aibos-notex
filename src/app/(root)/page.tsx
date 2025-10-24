@@ -1,4 +1,6 @@
 import { getAllTags } from "~/actions/notes";
+import { getUserSession } from "~/actions/auth";
+
 import { MainHeader } from "./components/main-header";
 import { Notes } from "./components/notes";
 import { Tags } from "./components/tags";
@@ -9,11 +11,11 @@ type SearchParams = { [key: string]: string | string[] | undefined };
 export default async function Home(props: {
   searchParams: Promise<SearchParams>;
 }) {
-  const searchParams = await props.searchParams;
-  const tags = await getAllTags();
-
+  const { error, user } = await getUserSession();
+  const tags = error ? [] : await getAllTags(user);
   const uniqueTags = Array.from(new Set(tags.map((tag) => tag.name)));
 
+  const searchParams = await props.searchParams;
   const isTagEnabled = searchParams.tags !== undefined;
   const isSearchEnabled = searchParams.search !== undefined;
 
@@ -28,7 +30,11 @@ export default async function Home(props: {
       )}
       {isTagEnabled ? (
         <div className="mt-2 block px-4 lg:hidden">
-          <Tags tags={uniqueTags} />
+          {(error && (
+            <div className="font-extrabold text-red-500">
+              Error loading tags
+            </div>
+          )) || <Tags tags={uniqueTags} />}
         </div>
       ) : (
         <Notes />

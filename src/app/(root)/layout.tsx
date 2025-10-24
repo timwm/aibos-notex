@@ -8,14 +8,14 @@ export default async function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
-    <SidebarProvider>
-      <AppSidebar />
-      <main className="relative w-full dark:bg-neutral-950 dark:text-neutral-200">
-        {children}
-      </main>
-      <Toaster />
-    </SidebarProvider>
-    <MobileNav />
+      <SidebarProvider defaultOpen={false}>
+        <AppSidebar />
+        <main className="relative w-full dark:bg-neutral-950 dark:text-neutral-200">
+          {children}
+        </main>
+        <Toaster />
+      </SidebarProvider>
+      <MobileNav />
     </>
   );
 }

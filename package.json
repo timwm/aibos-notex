@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS='--inspect' next dev --turbopack",
+    "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
@@ -89,6 +89,7 @@
     "eslint-plugin-tailwindcss": "3.18.2",
     "eslint-plugin-unused-imports": "^4.3.0",
     "globals": "^16.4.0",
+    "jiti": "^2.6.1",
     "prettier": "3.6.2",
     "prettier-plugin-tailwindcss": "^0.7.1",
     "tailwindcss": "^4.1.16",
