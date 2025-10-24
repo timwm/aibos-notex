@@ -1,124 +1,16 @@
 import { useState } from "react";
 import { Icon } from "@iconify/react";
-// import { twMerge } from "tailwind-merge";
-
-// // const DropdownItem = ({ iconName, title, _isActive, children }) => {
-// //   const [isOpen, setIsOpen] = useState(false);
-// //   const [, setHeight] = useState(0);
-// //   const contentRef = useRef(null);
-
-// //   // Functionality: toggleSubMenu(button)
-// //   const toggleSubMenu = (e) => {
-// //     e.preventDefault();
-// //     setIsOpen((prev) => !prev);
-// //   };
-
-// //   // Logic to calculate height for the grid-template-rows animation (CSS original behavior)
-// //   useEffect(() => {
-// //     if (contentRef.current) {
-// //       setHeight(isOpen ? contentRef.current.offsetHeight : 0);
-// //     }
-// //   }, [isOpen]);
-
-// //   const buttonClasses = `dropdown-btn flex items-center w-full text-left bg-transparent border-none font-inherit cursor-pointer rounded-lg p-3.5 gap-4
-// //     hover:bg-hover transition-colors duration-300 ${isOpen ? "rotate" : ""}`;
-
-// //   return (
-// //     <li className="list-none">
-// //       <button className={buttonClasses} onClick={toggleSubMenu}>
-// //         <IconMap name={iconName} />
-// //         <span className="grow">{title}</span>
-// //         {/* Dropdown Arrow Icon */}
-// //         <IconMap
-// //           className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""} hidden md:block`}
-// //           name="dropdown-arrow"
-// //         />
-// //       </button>
-
-// //       {/* Sub-Menu */}
-// //       <ul
-// //         className="sub-menu list-none transition-all duration-300 ease-in-out md:grid md:overflow-hidden"
-// //         style={{
-// //           // Replicates the original CSS grid-template-rows: 0fr/1fr transition
-// //           gridTemplateRows: isOpen ? "1fr" : "0fr",
-// //         }}
-// //       >
-// //         <div ref={contentRef} className="overflow-hidden">
-// //           {children}
-// //         </div>
-// //       </ul>
-// //     </li>
-// //   );
-// // };
-
-// // const SidebarItem = ({ iconName, title, href, isActive }) => {
-// //   const linkClasses = `flex items-center rounded-lg p-3.5 gap-4 text-text transition-colors duration-300 hover:bg-hover list-none ${
-// //     isActive ? "text-accent [&>svg]:fill-accent" : "[&>svg]:fill-text"
-// //   }`;
-
-// //   return (
-// //     <li className={isActive ? "active list-none" : "list-none"}>
-// //       <a className={linkClasses} href={href}>
-// //         <IconMap name={iconName} />
-// //         <span>{title}</span>
-// //       </a>
-// //     </li>
-// //   );
-// // };
-
-// // Mapping from SVG path (or context) to Iconify MDI name
-// const iconMap = {
-//   // Toggle Button (Collapse/Expand)
-//   toggle: "material-symbols:keyboard-double-arrow-left-rounded",
-
-//   // Navigation Icons
-//   home: "material-symbols:home-rounded",
-//   dashboard: "material-symbols:grid-view-rounded",
-//   create: "material-symbols:folder-open-rounded",
-//   todo: "material-symbols:list-alt-rounded",
-//   calendar: "material-symbols:calendar-month-rounded",
-//   profile: "material-symbols:account-circle-rounded",
-
-//   // Dropdown Arrow (Chevron Down/Rotate)
-//   "dropdown-arrow": "material-symbols:keyboard-arrow-down-rounded",
-// };
-
-// const IconMap = ({
-//   name,
-//   className = "",
-// }: {
-//   name: keyof typeof iconMap;
-//   className?: string;
-// }) => {
-//   const iconName = iconMap[name];
-
-//   if (!iconName) {
-//     // eslint-disable-next-line no-console
-//     console.error(`Icon not found for name: ${name}`);
-
-//     return null;
-//   }
-
-//   // Merging tailwind classes with default icon size/color classes.
-//   // The original CSS sets default fill color via CSS variables.
-//   const classes = twMerge("w-6 h-6 shrink-0 fill-current", className);
-
-//   return <Icon className={classes} icon={iconName} />;
-// };
-
-// // ---------------------------------------------------------------
-// // ---------------------------------------------------------------
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [openDropdown, setOpenDropdown] = useState(null);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
     setOpenDropdown(null); // close all submenus
   };
 
-  const toggleSubMenu = (menu) => {
+  const toggleSubMenu = (menu: string) => {
     setOpenDropdown(openDropdown === menu ? null : menu);
     if (!isOpen) setIsOpen(true);
   };

@@ -118,11 +118,13 @@ const ChartTooltipContent = React.forwardRef<
   (
     {
       active,
+      // @ts-expect-error O11 Interate build faster
       payload,
       className,
       indicator = "dot",
       hideLabel = false,
       hideIndicator = false,
+      // @ts-expect-error O11 Interate build faster
       label,
       labelFormatter,
       labelClassName,
@@ -188,7 +190,9 @@ const ChartTooltipContent = React.forwardRef<
         {!nestLabel ? tooltipLabel : null}
         <div className="grid gap-1.5">
           {payload
+            // @ts-expect-error O11 Interate build faster
             .filter((item) => item.type !== "none")
+            // @ts-expect-error O11 Interate build faster
             .map((item, index) => {
               const key = `${nameKey || item.name || item.dataKey || "value"}`;
               const itemConfig = getPayloadConfigFromPayload(config, item, key);
@@ -266,6 +270,7 @@ const ChartLegend = RechartsPrimitive.Legend;
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> &
+    // @ts-expect-error O11 Interate build faster
     Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
       hideIcon?: boolean;
       nameKey?: string;
@@ -277,6 +282,7 @@ const ChartLegendContent = React.forwardRef<
   ) => {
     const { config } = useChart();
 
+    // @ts-expect-error O11 Interate build faster
     if (!payload?.length) {
       return null;
     }
@@ -291,7 +297,9 @@ const ChartLegendContent = React.forwardRef<
         )}
       >
         {payload
+          // @ts-expect-error O11 Interate build faster
           .filter((item) => item.type !== "none")
+          // @ts-expect-error O11 Interate build faster
           .map((item) => {
             const key = `${nameKey || item.dataKey || "value"}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);

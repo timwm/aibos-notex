@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import { signOut } from "~/actions/auth";
 import { Button } from "~/components/ui/button";
+import { Logout as LogoutIcon } from "~/components/icons";
 
 const Logout = () => {
   const [loading, setLoading] = useState(false);
@@ -21,7 +22,7 @@ const Logout = () => {
       onSubmit={handleLogout}
     >
       <Button disabled={loading} type="submit" variant={"outline"}>
-        <Logout height={28} width={28} />
+        <LogoutIcon height={28} width={28} />
         {loading ? "Signing out..." : "Sign out"}
       </Button>
     </form>
