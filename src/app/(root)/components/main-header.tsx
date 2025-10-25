@@ -3,7 +3,15 @@
 import Link from "next/link";
 
 import CollapsibleBreadcrumbs from "~/components/collapsible-breadcrumbs";
-import { Settings, Theme } from "~/components/icons";
+import { Settings } from "~/components/icons";
+import ThemeToggle from "~/components/theme-toggle";
+import SignoutButton from "~/components/signout-button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  TooltipProvider,
+} from "~/components/ui/tooltip";
 
 import { SearchNotes } from "./search-notes";
 
@@ -21,10 +29,25 @@ export const MainHeader = ({ isArchive, isSettings }: Props) => {
       </h1>
       <div className="flex items-center gap-4">
         <SearchNotes />
+        <ThemeToggle />
         <Link href="/settings">
           <Settings className="h-6 w-6 dark:fill-neutral-200" />
-          <Theme />
         </Link>
+        <TooltipProvider delayDuration={0}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span>
+                <SignoutButton
+                  className="h-7 border border-red-500 text-red-500"
+                  showText={false}
+                />
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="font-bold text-red-500">Logout</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
     </header>
   );

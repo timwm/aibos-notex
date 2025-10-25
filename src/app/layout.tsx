@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { Inter, Noto_Serif, Source_Code_Pro } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import { Logo } from "~/components/icons";
 
+import { Logo } from "~/components/icons";
 import { ThemeProvider } from "~/providers/theme-provider";
 import { FontProvider } from "~/providers/font-provider";
 import AuthProvider from "~/providers/auth-provider";

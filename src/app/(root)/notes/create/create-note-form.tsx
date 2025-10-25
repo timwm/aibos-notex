@@ -38,8 +38,7 @@ export function CreateNoteForm() {
       content: "",
     },
   });
-  const { isAuthenticated, isLoading, user, ...rest } = useAuth();
-  console.log("create-note-form::", { isAuthenticated, isLoading, user, ...rest });
+  const { isAuthenticated, isLoading, user } = useAuth();
 
   if (isLoading) {
     return <>Loading....</>;
@@ -54,8 +53,8 @@ export function CreateNoteForm() {
 
       const tagsArray = tags.split(",").map((tag) => tag.trim());
 
-      console.log(tagsArray); // eslint-disable-line no-console
-      console.log(title, content); // eslint-disable-line no-console
+      // console.log(tagsArray); // eslint-disable-line no-console
+      // console.log(title, content); // eslint-disable-line no-console
 
       await addNote(
         {

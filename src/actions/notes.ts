@@ -182,8 +182,6 @@ export async function addNote(
   //   throw new Error("User not found");
   // }
 
-  console.log("notes::addNote::", { user });
-
   const noteUser = await db.query.usersTable.findFirst({
     where: eq(usersTable.userId, user.id),
   });

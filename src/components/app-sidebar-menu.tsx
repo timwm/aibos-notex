@@ -110,9 +110,7 @@ export const AppSidebarMenu = () => {
             );
             const isActive = item.urlRegex
               ? item.urlRegex.test(activePathname)
-              : activePathname === itemPathname
-
-            console.log({ T:item.title, isActive, itemPathname, activePathname })
+              : activePathname === itemPathname;
 
             return (
               <SidebarItem
@@ -184,7 +182,6 @@ const SidebarItem = memo(function SidbarItem({
             <SidebarMenuSub>
               {item.items.map((subItem) => {
                 const { pathname } = parseUrl(subItem.url || "#", getBaseUrl());
-                console.log({sitemU: subItem.url, itemUrl});
 
                 return (
                   <SidebarMenuSubItem key={subItem.title}>
@@ -193,7 +190,9 @@ const SidebarItem = memo(function SidbarItem({
                         subItem.component
                       ) : (
                         <Link
-                          href={pathname === itemPathname ? "#" : subItem.url || "#"}
+                          href={
+                            pathname === itemPathname ? "#" : subItem.url || "#"
+                          }
                         >
                           {subItem.icon && <subItem.icon />}
                           <span>{subItem.title}</span>
@@ -201,7 +200,8 @@ const SidebarItem = memo(function SidbarItem({
                       )}
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
-              );})}
+                );
+              })}
             </SidebarMenuSub>
           </CollapsibleContent>
         </SidebarMenuItem>
@@ -219,7 +219,9 @@ const SidebarItem = memo(function SidbarItem({
           item.component
         ) : (
           <Link className="flex w-full items-center" href={itemUrl}>
-            <span className="-ml-1.5 h-6 w-6">{item.icon && <item.icon />}</span>
+            <span className="-ml-1.5 h-6 w-6">
+              {item.icon && <item.icon />}
+            </span>
             <span className="text-md ml-2">{item.title}</span>
           </Link>
         )}

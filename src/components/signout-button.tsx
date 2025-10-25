@@ -1,30 +1,42 @@
 "use client";
 
+import { redirect } from "next/navigation";
 import React, { useState } from "react";
 
 import { signOut } from "~/actions/auth";
-import { Button } from "~/components/ui/button";
 import { Logout as LogoutIcon } from "~/components/icons";
+import { cn } from "~/lib/utils";
+import { LOGIN_URL } from "~/lib/constants";
 
-const Logout = () => {
+type LogoutProps = {
+  showText?: boolean;
+  iconProps?: React.SVGProps<SVGSVGElement>;
+  className?: string;
+};
+
+const Logout = ({ showText = false, iconProps, className }: LogoutProps) => {
   const [loading, setLoading] = useState(false);
 
   const handleLogout = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
-    await signOut();
+    const { error } = await signOut();
+
+    if (!error) {
+      redirect(LOGIN_URL);
+    }
     setLoading(false);
   };
 
   return (
     <form
-      className="cursor-pointer rounded-md px-4 py-2 text-sm text-white"
+      className={cn("cursor-pointer rounded-md text-sm text-white", className)}
       onSubmit={handleLogout}
     >
-      <Button disabled={loading} type="submit" variant={"outline"}>
-        <LogoutIcon height={28} width={28} />
-        {loading ? "Signing out..." : "Sign out"}
-      </Button>
+      <button disabled={loading} type="submit">
+        <LogoutIcon height={24} width={24} {...iconProps} />
+        {showText && (loading ? "Signing out..." : "Sign out")}
+      </button>
     </form>
   );
 };
