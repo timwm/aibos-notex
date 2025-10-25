@@ -6,9 +6,15 @@ import { Label } from "~/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 
 export const FontThemeOptions = () => {
-  const [fontTheme, setFontTheme] = useState(
-    localStorage.getItem("font-theme") || "sans-serif",
-  );
+  const [fontTheme, setFontTheme] = useState(() => {
+    // Lazy initialization: only runs once on mount, on the client-side
+    if (typeof window === "undefined") {
+      return "sans-serif";
+    }
+
+    return localStorage.getItem("font-theme") || "sans-serif";
+  });
+
   const onThemeChange = (theme: string) => {
     const fontProvider = document.querySelector(".font-provider");
 

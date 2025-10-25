@@ -1,4 +1,3 @@
-// components/AuthProvider.tsx
 "use client";
 
 import {
@@ -64,6 +63,8 @@ export default function AuthProvider({
 
     return () => subscription.unsubscribe();
   }, [supabase]);
+
+  console.log("auth-provider::", { user, status, initialError, isLoading });
 
   return (
     <AuthContext.Provider

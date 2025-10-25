@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import {
@@ -120,7 +121,7 @@ export function CollapsibleBreadcrumbs({
       <DropdownMenuContent>
         {collapsed.map((c) => (
           <DropdownMenuItem key={c.path} asChild>
-            <a href={c.path}>{c.label}</a>
+            <Link href={c.path}>{c.label}</Link>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

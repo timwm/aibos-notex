@@ -15,7 +15,6 @@ type Props = {
 export const MainHeader = ({ isArchive, isSettings }: Props) => {
   return (
     <header className="hidden items-center justify-between border-b border-neutral-200 px-8 py-[18.5px] lg:flex dark:border-neutral-700">
-      {/* <CustomTrigger /> */}
       <CollapsibleBreadcrumbs />
       <h1 className="text-preset-1 dark:text-neutral-200">
         {isArchive ? "Archived Notes" : isSettings ? "Settings" : "All Notes"}

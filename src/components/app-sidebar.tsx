@@ -39,7 +39,7 @@ export async function AppSidebar() {
       </SidebarHeader>
       <SidebarContent className="bg-neutral-0 dark:bg-neutral-950 dark:text-neutral-200">
         <AppSidebarMenu />
-        <div className="mt-2 border-t border-neutral-200 py-2">
+        <div className="m-2 mt-4 border-t border-neutral-200 py-4">
           <ErrorFallback isError={!!error}>
             <Tags tags={uniqueTags} />
           </ErrorFallback>

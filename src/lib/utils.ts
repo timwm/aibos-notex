@@ -10,9 +10,37 @@ export function cn(...inputs: ClassValue[]) {
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-export const parseUrl = (url: string, nextURL = HOME_URL) => {
-  const { searchParams, ...rest } = new URL(url);
-  const next = searchParams.get(NEXT_PARAM_KEY) ?? nextURL;
+/**
+ * Parses a URL and extracts search parameters along with a 'next' parameter.
+ * @param url - The URL to parse.
+ * @param baseUrl - The base URL to resolve relative URLs.
+ * @param nextURL - The default next URL if 'next' parameter is not found.
+ * @returns An object containing search parameters, the next URL, and other URL components.
+ */
+export const parseUrl = (url: string, baseUrl?: string, nextUrl = HOME_URL) => {
+  const urlObj = new URL(url, baseUrl);
+  const { searchParams } = urlObj;
+  const next = searchParams.get(NEXT_PARAM_KEY) ?? nextUrl;
 
-  return { searchParams, next, ...rest };
+  return {
+    searchParams,
+    next,
+    pathname: urlObj.pathname,
+    href: urlObj.href,
+    origin: urlObj.origin,
+    host: urlObj.host,
+    hostname: urlObj.hostname,
+    port: urlObj.port,
+    protocol: urlObj.protocol,
+    hash: urlObj.hash,
+  };
 };
+
+export function getBaseUrl() {
+  const baseUrl =
+    typeof window === "undefined"
+      ? `http://localhost:3000${activePathname}` // ssr
+      : window.location.href;
+
+  return baseUrl;
+}

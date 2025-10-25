@@ -182,20 +182,18 @@ export async function addNote(
   //   throw new Error("User not found");
   // }
 
+  console.log("notes::addNote::", { user });
+
   const noteUser = await db.query.usersTable.findFirst({
     where: eq(usersTable.userId, user.id),
   });
 
-  // TODO: fix user creation logic
-  // if (!noteUser) {
-  //   await db.insert(usersTable).values({
-  //     userId: user.id!,
-  //     email: user.emailAddresses[0].emailAddress!,
-  //     username: user.username!,
-  //   });
-  // }
   if (!noteUser) {
-    throw new Error("User not found");
+    await db.insert(usersTable).values({
+      userId: user.id!,
+      email: user.email!,
+      username: user.user_metadata.username,
+    });
   }
 
   const noteData = await db

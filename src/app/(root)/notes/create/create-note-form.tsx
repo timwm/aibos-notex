@@ -38,7 +38,8 @@ export function CreateNoteForm() {
       content: "",
     },
   });
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isLoading, user, ...rest } = useAuth();
+  console.log("create-note-form::", { isAuthenticated, isLoading, user, ...rest });
 
   if (isLoading) {
     return <>Loading....</>;
