@@ -8,19 +8,20 @@ import { Label } from "~/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 
 export const ColorThemeOptions = () => {
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
-  const { theme: nextTheme, setTheme: setNextTheme } = useTheme();
+  // const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const onThemeChange = (theme: string) => {
-    const root = document.documentElement;
+    // const root = document.documentElement;
 
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-    localStorage.setItem("theme", theme);
+    // if (theme === "dark") {
+    //   root.classList.add("dark");
+    // } else {
+    //   root.classList.remove("dark");
+    // }
+    // localStorage.setItem("theme", theme);
     setNextTheme(nextTheme === "dark" ? "dark" : "light");
   };
+  console.log({theme, resolvedTheme})
 
   return (
     <div className="flex w-full flex-col gap-6 lg:max-w-[528px]">

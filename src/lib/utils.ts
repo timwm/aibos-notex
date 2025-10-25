@@ -36,10 +36,10 @@ export const parseUrl = (url: string, baseUrl?: string, nextUrl = HOME_URL) => {
   };
 };
 
-export function getBaseUrl() {
+export function getBaseUrl(path: string = "") {
   const baseUrl =
     typeof window === "undefined"
-      ? `http://localhost:3000${activePathname}` // ssr
+      ? `http://localhost:3000${path}` // ssr
       : window.location.href;
 
   return baseUrl;

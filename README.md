@@ -10,21 +10,23 @@ The focus of this project is to demonstrate:
 - Clean, maintainable code
 - Thoughtful use of modern technologies
 
+Deployment Link: [https://aibos-notex.vercel.app/](https://aibos-notex.vercel.app/)
+
 ---
 
 ## ⚙️ Tech Stack
 
 ### Frontend
-- **React.js (Vite + TypeScript)**  
+- **React.js (Nextjs + TypeScript)**  
   Chosen for its component-driven architecture, strong ecosystem, and developer productivity.  
   - **React Router** for client-side navigation  
   - **TailwindCSS** for rapid, responsive UI development  
 
 ### Backend
-- **Node.js (Express.js)**  
-  Provides a lightweight, flexible API layer.  
+- **Node.js (Nextjs)**  
+  Provides a lightweight, flexible action/API layer.  
   - RESTful endpoints for authentication and note management  
-  - Middleware for validation and error handling  
+  - Proxy/Middleware for validation and error handling  
 
 ### Database
 - **Firebase Firestore**  

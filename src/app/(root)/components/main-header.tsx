@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import CollapsibleBreadcrumbs from "~/components/collapsible-breadcrumbs";
-import { Settings } from "~/components/icons";
+import { Settings, Theme } from "~/components/icons";
 
 import { SearchNotes } from "./search-notes";
 
@@ -23,6 +23,7 @@ export const MainHeader = ({ isArchive, isSettings }: Props) => {
         <SearchNotes />
         <Link href="/settings">
           <Settings className="h-6 w-6 dark:fill-neutral-200" />
+          <Theme />
         </Link>
       </div>
     </header>

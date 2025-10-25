@@ -106,9 +106,9 @@ export const AppSidebarMenu = () => {
             const { pathname: itemPathname } = parseUrl(
               // Fallback to "#" so those without don't cause navigation
               item.url || "#",
-              getBaseUrl(),
+              getBaseUrl(activePathname),
             );
-            const isActive = !!item.urlRegex
+            const isActive = item.urlRegex
               ? item.urlRegex.test(activePathname)
               : activePathname === itemPathname
 
@@ -120,6 +120,7 @@ export const AppSidebarMenu = () => {
                 isActive={isActive}
                 isCollapsed={openItem === item.title}
                 item={item}
+                itemPathname={itemPathname}
                 setCollapsedItem={setOpenItem}
               />
             );
@@ -132,6 +133,7 @@ export const AppSidebarMenu = () => {
 
 type SidebarItemProps = {
   item: NavT["items"][number];
+  itemPathname: string;
   isActive: boolean;
   isCollapsed: boolean;
   setCollapsedItem: (title: string | null) => void;
@@ -139,6 +141,7 @@ type SidebarItemProps = {
 
 const SidebarItem = memo(function SidbarItem({
   item,
+  itemPathname,
   isActive,
   isCollapsed,
   setCollapsedItem,
@@ -184,23 +187,21 @@ const SidebarItem = memo(function SidbarItem({
                 console.log({sitemU: subItem.url, itemUrl});
 
                 return (
-                <SidebarMenuSubItem key={subItem.title}>
-                  <SidebarMenuSubButton asChild>
-                    {subItem.component ? (
-                      subItem.component
-                    ) : (
-                      <Link
-                        href={
-                          pathname === itemUrl ? "#" : subItem.url || "#"
-                        }
-                      >
-                        {subItem.icon && <subItem.icon />}
-                        <span>{subItem.title}</span>
-                      </Link>
-                    )}
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-              )})}
+                  <SidebarMenuSubItem key={subItem.title}>
+                    <SidebarMenuSubButton asChild>
+                      {subItem.component ? (
+                        subItem.component
+                      ) : (
+                        <Link
+                          href={pathname === itemPathname ? "#" : subItem.url || "#"}
+                        >
+                          {subItem.icon && <subItem.icon />}
+                          <span>{subItem.title}</span>
+                        </Link>
+                      )}
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+              );})}
             </SidebarMenuSub>
           </CollapsibleContent>
         </SidebarMenuItem>
