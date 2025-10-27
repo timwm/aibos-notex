@@ -5,6 +5,7 @@ export default function ErrorFallback({
   children,
   fallback = null,
 }: PropsWithChildren<{ isError: boolean; fallback?: React.ReactNode }>) {
+  console.log("ErrorFallback::", { isError });
   if (isError)
     return (
       <div className="flex items-center justify-center font-extrabold text-red-500">

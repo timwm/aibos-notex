@@ -12,7 +12,6 @@ import {
   signupSchema,
   safeParse,
 } from "~/lib/schema";
-// import { sleep } from "~/lib/utils";
 
 export const getUserSession = cache(async () => {
   const supabase = await createClient();

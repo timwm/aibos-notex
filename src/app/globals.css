@@ -189,6 +189,10 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+body {
+  font-family: var(--font-source-code-pro), monospace;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -197,6 +201,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Begin Titap */
+
+@import '../styles/_variables.scss';                                       
+@import '../styles/_keyframe-animations.scss';
+
+/* End Titap */
 
 .font-provider {
   font-family: var(--font-inter), sans-serif;
@@ -208,6 +219,14 @@
 
 .font-provider[data-font="source-code-pro"] {
   font-family: var(--font-source-code-pro), monospace;
+}
+
+.font-provider[data-font="poppins"] {
+  font-family: var(--font-poppins), sans-serif;
+}
+
+.font-provider[data-font="nunito"] {
+  font-family: var(--font-nunito), sans-serif;
 }
 
 @layer components {
@@ -235,3 +254,4 @@
     @apply text-[10px]! font-normal! leading-[120%]! tracking-[-0.2px]!;
   }
 }
+

@@ -44,16 +44,41 @@ export default function AuthProvider({
 }) {
   const supabase = useMemo(() => createClient(), []);
   const [user, setUser] = useState<AuthContextType["user"]>(initialUser);
-  const [isLoading, setIsLoading] = useState(false);
+  // If there's an initial error but no user, we should still check the client-side session
+  const [isLoading, setIsLoading] = useState(
+    !initialUser && Boolean(initialError),
+  );
   const [status, setStatus] = useState<AuthStatus>(() =>
     initialError ? "error" : initialUser ? "authenticated" : "unauthenticated",
   );
 
   useEffect(() => {
+    let mounted = true;
+
+    // If there's no initial user, check the session on mount
+    // This handles the case where server-side session check fails but client-side succeeds
+
+    // Don't treat "no session" as a hard error - let the client check
+    // This prevents issues on first load after login where server-side
+    // may not have access to the latest cookies yet
+    // if (!initialUser) {
+    //   supabase.auth.getSession().then(({ data: { session } }) => {
+    //     if (!mounted) return;
+
+    //     const user = session?.user ?? null;
+
+    //     setUser(user);
+    //     setStatus(user ? "authenticated" : "unauthenticated");
+    //     setIsLoading(false);
+    //   });
+    // }
+
     // Listen for auth changes on the client
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!mounted) return;
+
       const user = session?.user ?? null;
 
       setUser(user);
@@ -61,8 +86,11 @@ export default function AuthProvider({
       setIsLoading(false);
     });
 
-    return () => subscription.unsubscribe();
-  }, [supabase]);
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, [supabase, initialUser]);
 
   return (
     <AuthContext.Provider

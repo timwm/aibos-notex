@@ -56,7 +56,7 @@ export const ShowNote = ({ note }: Props) => {
   if (isLoading) {
     return <>Loading....</>;
   } else if (!isAuthenticated || !user) {
-    return <ErrorFallback isError={true} />;
+    return <ErrorFallback isError={1} />;
   }
 
   // 2. Define a submit handler.

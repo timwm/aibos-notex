@@ -43,7 +43,7 @@ export function CreateNoteForm() {
   if (isLoading) {
     return <>Loading....</>;
   } else if (!isAuthenticated || !user) {
-    return <ErrorFallback isError={true} />;
+    return <ErrorFallback isError={11} />;
   }
 
   // 2. Define a submit handler.

@@ -17,14 +17,13 @@ export const sleep = (ms: number) =>
  * @param nextURL - The default next URL if 'next' parameter is not found.
  * @returns An object containing search parameters, the next URL, and other URL components.
  */
-export const parseUrl = (url: string, baseUrl?: string, nextUrl = HOME_URL) => {
+export const parseUrl = (url: string, baseUrl?: string) => {
   const urlObj = new URL(url, baseUrl);
   const { searchParams } = urlObj;
-  const next = searchParams.get(NEXT_PARAM_KEY) ?? nextUrl;
 
   return {
     searchParams,
-    next,
+    next: searchParams.get(NEXT_PARAM_KEY) || undefined,
     pathname: urlObj.pathname,
     href: urlObj.href,
     origin: urlObj.origin,

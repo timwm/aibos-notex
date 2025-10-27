@@ -13,6 +13,7 @@ import { Mail, Lock } from "~/components/icons";
 import { login } from "~/actions/auth";
 import { type LoginSchemaT, loginSchema } from "~/lib/schema";
 import { SIGNUP_URL, AUTH_REDIRECT_URL } from "~/lib/constants";
+import { parseUrl, getBaseUrl } from "~/lib/utils";
 
 type ServerError = {
   fieldErrors?: Partial<Record<keyof LoginSchemaT, string[]>>;
@@ -56,7 +57,9 @@ export default function LoginForm() {
           setServerError(message || "Login failed. Please try again.");
         }
       } else {
-        router.push(AUTH_REDIRECT_URL);
+        const { next = AUTH_REDIRECT_URL } = parseUrl(getBaseUrl());
+
+        router.push(next);
       }
     } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars, prettier/prettier
       setServerError("An unexpected error occurred. Please try again.");

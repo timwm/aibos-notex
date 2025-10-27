@@ -54,7 +54,7 @@ export const AllNotes = ({ notes, isArchive }: Props) => {
   });
 
   return (
-    <div className="divide-y divide-neutral-200 dark:divide-neutral-800">
+    <div className="space-y-2 divide-y divide-neutral-200 dark:divide-neutral-800">
       {filteredNotes.map((note) => {
         const active = params.noteId === note.id.toString();
 

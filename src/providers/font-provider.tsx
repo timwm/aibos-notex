@@ -13,6 +13,10 @@ export const FontProvider = ({
       fontProvider!.setAttribute("data-font", "sans-serif");
     } else if (theme == "noto-serif") {
       fontProvider!.setAttribute("data-font", "noto-serif");
+    } else if (theme == "poppins") {
+      fontProvider!.setAttribute("data-font", "poppins");
+    } else if (theme == "nunito") {
+      fontProvider!.setAttribute("data-font", "nunito");
     } else {
       fontProvider!.setAttribute("data-font", "source-code-pro");
     }

@@ -18,5 +18,5 @@ export default async function ArchiveNotePage({ params }: Props) {
     return <ShowNote note={note} />;
   }
 
-  return <ErrorFallback isError={true} />;
+  return <ErrorFallback isError={1} />;
 }

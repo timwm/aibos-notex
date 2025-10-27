@@ -25,6 +25,7 @@ import { useAuth } from "~/providers/auth-provider";
 
 import { ShowNoteOptions } from "./show-note-options";
 import NoteOptionsMobile from "./note-options-mobile";
+import { SimpleEditor } from '~/components/tiptap-templates/simple/simple-editor'
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
@@ -260,7 +261,7 @@ export const ShowNote = ({ note }: Props) => {
                 </div>
               </div>
             </div>
-            <div className="self-stretch px-6 py-4">
+            {/* <div className="self-stretch px-6 py-4">
               <FormField
                 control={form.control}
                 name="content"
@@ -278,7 +279,9 @@ export const ShowNote = ({ note }: Props) => {
                   </FormItem>
                 )}
               />
-            </div>
+            </div> */}
+            {/* <AdvancedEditor /> */}
+            <SimpleEditor />
             <div className="flex items-center gap-4 border-t border-neutral-200 px-6 py-5">
               <Button
                 className="text-preset-4 text-neutral-0 block bg-blue-500"

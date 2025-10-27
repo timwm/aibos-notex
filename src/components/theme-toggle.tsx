@@ -1,6 +1,6 @@
 import { useTheme } from "next-themes";
 
-import { Mode } from "~/components/icons";
+import { Mode, Mode2 } from "~/components/icons";
 
 export const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
@@ -11,7 +11,7 @@ export const ThemeToggle = () => {
 
   return (
     <button onClick={() => toggleTheme(theme || "light")}>
-      <Mode />
+      {theme === "light" ? <Mode /> : <Mode2 />}
       {/* {theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"} */}
     </button>
   );

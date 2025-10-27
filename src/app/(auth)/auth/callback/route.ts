@@ -4,12 +4,12 @@ import { eq } from "drizzle-orm";
 import { createClient } from "~/utils/supabase/server";
 import { db } from "~/db";
 import { usersTable } from "~/db/schema"; // your Drizzle table
-import { ERROR_URL } from "~/lib/constants";
+import { ERROR_URL, HOME_URL } from "~/lib/constants";
 import { parseUrl } from "~/lib/utils";
 // The client you created from the Server-Side Auth instructions
 
 export async function GET(request: Request) {
-  const { origin, next, searchParams } = parseUrl(request.url);
+  const { origin, next = HOME_URL, searchParams } = parseUrl(request.url);
   const code = searchParams.get("code");
 
   if (code) {
