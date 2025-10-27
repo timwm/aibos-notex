@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useCallback, useRef, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,10 +16,13 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { Textarea } from "~/components/ui/textarea";
 import { addNote } from "~/actions/notes";
 import ErrorFallback from "~/components/error-fallback";
 import { useAuth } from "~/providers/auth-provider";
+import {
+  ExposedHandle,
+  SimpleEditor,
+} from "~/components/tiptap-templates/simple/simple-editor";
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
@@ -39,44 +42,51 @@ export function CreateNoteForm() {
     },
   });
   const { isAuthenticated, isLoading, user } = useAuth();
+  const ref = useRef<ExposedHandle>(null);
+
+  // 2. Define a submit handler.
+  const onSubmit = useCallback(
+    (values: z.infer<typeof formSchema>) => {
+      alert();
+      startTransition(async () => {
+        const { title, tags, content } = values;
+        const tagsArray = tags.split(",").map((tag) => tag.trim());
+        const { json, text, contentType } = ref.current?.getContent() || {};
+
+        // console.log(tagsArray); // eslint-disable-line no-console
+        // console.log(title, content); // eslint-disable-line no-console
+
+        await addNote(
+          {
+            title,
+            content: text || content,
+            raw_content: json || null,
+            contentType: contentType || null,
+            allTags: tagsArray,
+          },
+          user!,
+        );
+
+        toast.success(
+          <div className="text-preset-6 flex w-[274px] items-center gap-2 text-neutral-950 md:w-[390px]">
+            <Image
+              alt=""
+              height={24}
+              src={"/images/icon-checkmark.svg"}
+              width={24}
+            />
+            Note saved successfully!
+          </div>,
+        );
+      });
+    },
+    [user],
+  );
 
   if (isLoading) {
     return <>Loading....</>;
   } else if (!isAuthenticated || !user) {
-    return <ErrorFallback isError={11} />;
-  }
-
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    startTransition(async () => {
-      const { title, tags, content } = values;
-
-      const tagsArray = tags.split(",").map((tag) => tag.trim());
-
-      // console.log(tagsArray); // eslint-disable-line no-console
-      // console.log(title, content); // eslint-disable-line no-console
-
-      await addNote(
-        {
-          title,
-          content,
-          allTags: tagsArray,
-        },
-        user!,
-      );
-
-      toast.success(
-        <div className="text-preset-6 flex w-[274px] items-center gap-2 text-neutral-950 md:w-[390px]">
-          <Image
-            alt=""
-            height={24}
-            src={"/images/icon-checkmark.svg"}
-            width={24}
-          />
-          Note saved successfully!
-        </div>,
-      );
-    });
+    return <ErrorFallback isError={true} />;
   }
 
   return (
@@ -84,6 +94,8 @@ export function CreateNoteForm() {
       <Form {...form}>
         <form
           className="mb-14 grid flex-1 grid-rows-[auto_1fr_auto] border-neutral-200 lg:mb-0 lg:border-r"
+          // FIXME: type issue here
+          // eslint-disable-next-line react-hooks/refs
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <div className="space-y-4 border-neutral-200 px-6 py-5 lg:border-b">
@@ -151,8 +163,8 @@ export function CreateNoteForm() {
               </div>
             </div>
           </div>
-          <div className="self-stretch px-6 py-4">
-            <FormField
+          {/* <div className="self-stretch px-6 py-4"> */}
+          {/* <FormField
               control={form.control}
               name="content"
               render={({ field }) => (
@@ -168,8 +180,13 @@ export function CreateNoteForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
-          </div>
+            /> */}
+          <SimpleEditor
+            ref={ref}
+            content={null}
+            onUpdate={(text) => form.setValue("content", text)}
+          />
+          {/* </div> */}
           <div className="border-t border-neutral-200 px-6 py-5">
             <Button className="block" type="submit">
               Submit

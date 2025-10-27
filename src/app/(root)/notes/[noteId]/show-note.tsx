@@ -1,7 +1,7 @@
 "use client";
 import { format } from "date-fns";
 import Image from "next/image";
-import { useTransition } from "react";
+import { useTransition, useRef, useCallback } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,15 +17,18 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { Textarea } from "~/components/ui/textarea";
+// import { Textarea } from "~/components/ui/textarea";
 import { archiveNote, deleteNote, updateNote } from "~/actions/notes";
 import { NotesWithTags } from "~/types";
 import ErrorFallback from "~/components/error-fallback";
 import { useAuth } from "~/providers/auth-provider";
+import {
+  type ExposedHandle,
+  SimpleEditor,
+} from "~/components/tiptap-templates/simple/simple-editor";
 
 import { ShowNoteOptions } from "./show-note-options";
 import NoteOptionsMobile from "./note-options-mobile";
-import { SimpleEditor } from '~/components/tiptap-templates/simple/simple-editor'
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
@@ -39,9 +42,13 @@ type Props = {
 
 export const ShowNote = ({ note }: Props) => {
   const tagsName = note.tags.map((tag) => tag.name).join(", ");
-  const noteTitle = note.title;
-  const noteContent = note.content;
-  const noteId = note.id;
+  const {
+    id: noteId,
+    title: noteTitle,
+    content: noteContent,
+    raw_content: noteRawContent,
+    content_type: noteContentType,
+  } = note;
   const [isPending, startTransition] = useTransition();
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -53,42 +60,48 @@ export const ShowNote = ({ note }: Props) => {
     },
   });
   const { isAuthenticated, isLoading, user } = useAuth();
+  const ref = useRef<ExposedHandle>(null);
+
+  // 2. Define a submit handler.
+  const onSubmit = useCallback(
+    (values: z.infer<typeof formSchema>) => {
+      startTransition(async () => {
+        const { title, tags } = values;
+        const tagsArray = tags.split(",").map((tag) => tag.trim());
+        const { json, text } = ref.current?.getContent() || {};
+
+        await updateNote(
+          {
+            id: note.id,
+            title,
+            content: text || noteContent,
+            raw_content: json || noteRawContent,
+            contentType: noteContentType || undefined,
+            allTags: tagsArray,
+          },
+          user!,
+        );
+
+        toast.success(
+          <div className="text-preset-6 flex w-[274px] items-center gap-2 text-neutral-950 md:w-[390px]">
+            <Image
+              alt=""
+              height={24}
+              src={"/images/icon-checkmark.svg"}
+              width={24}
+            />
+            Note updated successfully!
+          </div>,
+        );
+      });
+    },
+    [note.id, startTransition, user],
+  );
 
   if (isLoading) {
     return <>Loading....</>;
   } else if (!isAuthenticated || !user) {
     return <ErrorFallback isError={true} />;
-  }
-
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    startTransition(async () => {
-      const { title, tags, content } = values;
-
-      const tagsArray = tags.split(",").map((tag) => tag.trim());
-
-      await updateNote(
-        {
-          id: note.id,
-          title,
-          content,
-          allTags: tagsArray,
-        },
-        user!,
-      );
-
-      toast.success(
-        <div className="text-preset-6 flex w-[274px] items-center gap-2 text-neutral-950 md:w-[390px]">
-          <Image
-            alt=""
-            height={24}
-            src={"/images/icon-checkmark.svg"}
-            width={24}
-          />
-          Note updated successfully!
-        </div>,
-      );
-    });
   }
 
   const handleArchiveBtn = () => {
@@ -118,6 +131,8 @@ export const ShowNote = ({ note }: Props) => {
         <Form {...form}>
           <form
             className="mb-14 grid flex-1 grid-rows-[auto_1fr_auto] border-neutral-200 lg:mb-0 lg:border-r"
+            // FIXME: type issue here
+            // eslint-disable-next-line react-hooks/refs
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <div className="space-y-4 border-neutral-200 px-6 py-5 lg:border-b">
@@ -281,24 +296,29 @@ export const ShowNote = ({ note }: Props) => {
               />
             </div> */}
             {/* <AdvancedEditor /> */}
-            <SimpleEditor />
-            <div className="flex items-center gap-4 border-t border-neutral-200 px-6 py-5">
-              <Button
-                className="text-preset-4 text-neutral-0 block bg-blue-500"
-                disabled={isPending}
-                type="submit"
-              >
-                Update
-              </Button>
-              <Button
-                asChild
-                className="text-preset-4 block bg-neutral-100 text-neutral-600"
-                disabled={isPending}
-                type="button"
-              >
-                <Link href="/">Cancel</Link>
-              </Button>
-            </div>
+            <SimpleEditor
+              ref={ref}
+              content={noteRawContent || noteContent}
+              contentType={noteContentType || undefined}
+            >
+              <div className="flex items-center gap-4 border-t border-neutral-200 px-6 py-5">
+                <Button
+                  className="text-preset-4 text-neutral-0 block bg-blue-500"
+                  disabled={isPending}
+                  type="submit"
+                >
+                  Update
+                </Button>
+                <Button
+                  asChild
+                  className="text-preset-4 block bg-neutral-100 text-neutral-600"
+                  disabled={isPending}
+                  type="button"
+                >
+                  <Link href="/">Cancel</Link>
+                </Button>
+              </div>
+            </SimpleEditor>
           </form>
         </Form>
         <ShowNoteOptions

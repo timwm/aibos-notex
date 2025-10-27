@@ -18,5 +18,5 @@ export default async function NotePage({ params }: Props) {
     return <ShowNote note={note} />;
   }
 
-  return <ErrorFallback isError={1} />;
+  return <ErrorFallback isError={true} />;
 }

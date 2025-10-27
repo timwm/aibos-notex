@@ -3,11 +3,16 @@
 // import { currentUser } from "@clerk/nextjs/server";
 import { and, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 import { cache } from "react";
 import { User } from "@supabase/supabase-js";
 
-import { notesTable, tagsTable, usersTable } from "~/db/schema";
+import {
+  type RawContent,
+  notesTable,
+  tagsTable,
+  usersTable,
+} from "~/db/schema";
 import { db } from "~/db";
 
 export const getAllNotes = cache(async (user: User) => {
@@ -91,7 +96,8 @@ export const getNote = cache(async (id: number, user: User) => {
   });
 
   if (!noteData) {
-    throw new Error("Note not found");
+    // throw new Error("Note not found");
+    return notFound();
   }
 
   return noteData;
@@ -168,10 +174,14 @@ export async function addNote(
   {
     title,
     content,
+    raw_content,
+    contentType,
     allTags,
   }: {
     title: string;
     content: string;
+    raw_content?: RawContent | null;
+    contentType?: string | null;
     allTags: string[];
   },
   user: User,
@@ -200,6 +210,8 @@ export async function addNote(
       userId: user.id,
       title,
       content,
+      raw_content,
+      content_type: contentType,
     })
     .returning({ insertedId: notesTable.id });
 
@@ -224,11 +236,15 @@ export async function updateNote(
     id,
     title,
     content,
+    raw_content,
+    contentType,
     allTags,
   }: {
     id: number;
     title: string;
     content: string;
+    raw_content?: RawContent | null;
+    contentType?: string | null;
     allTags: string[];
   },
   user: User,
@@ -244,6 +260,8 @@ export async function updateNote(
     .set({
       title,
       content,
+      raw_content,
+      content_type: contentType,
     })
     .where(and(eq(notesTable.userId, user.id), eq(notesTable.id, id)));
 

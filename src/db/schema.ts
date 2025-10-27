@@ -3,6 +3,7 @@ import {
   boolean,
   index,
   integer,
+  jsonb,
   pgTable,
   serial,
   text,
@@ -17,6 +18,11 @@ export const usersTable = pgTable("users", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export type RawContent = {
+  type: string;
+  content: unknown[];
+};
+
 export const notesTable = pgTable(
   "notes",
   {
@@ -26,6 +32,8 @@ export const notesTable = pgTable(
       .references(() => usersTable.userId, { onDelete: "cascade" }),
     title: text("title").notNull(),
     content: text("content").notNull(),
+    raw_content: jsonb("raw_content").$type<RawContent>(), //.default({}),
+    content_type: text("content_type"), // .notNull().default("markdown"),
     is_archived: boolean("is_archived").notNull().default(false),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),

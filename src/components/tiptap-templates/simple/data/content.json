@@ -22,7 +22,7 @@
       "content": [
         {
           "type": "text",
-          "text": "Welcome to the "
+          "text": "Welcome to "
         },
         {
           "type": "text",
@@ -37,11 +37,11 @@
               }
             }
           ],
-          "text": "Simple Editor"
+          "text": "Notex"
         },
         {
           "type": "text",
-          "text": " template! This template integrates "
+          "text": " app! This app integrates "
         },
         {
           "type": "text",
@@ -50,11 +50,11 @@
               "type": "bold"
             }
           ],
-          "text": "open source"
+          "text": "responsive"
         },
         {
           "type": "text",
-          "text": " UI components and Tiptap extensions licensed under "
+          "text": " design, markdown support, and rich text editing "
         },
         {
           "type": "text",
@@ -79,7 +79,7 @@
       "content": [
         {
           "type": "text",
-          "text": "Integrate it by following the "
+          "text": "Create your notes on the "
         },
         {
           "type": "text",
@@ -87,18 +87,18 @@
             {
               "type": "link",
               "attrs": {
-                "href": "https://tiptap.dev/docs/ui-components/templates/simple-editor",
+                "href": "#",
                 "target": "_blank",
                 "rel": "noopener noreferrer nofollow",
                 "class": null
               }
             }
           ],
-          "text": "Tiptap UI Components docs"
+          "text": "Fly at mazing pace"
         },
         {
           "type": "text",
-          "text": " or using our CLI tool."
+          "text": " all in the browser."
         }
       ]
     },
@@ -110,7 +110,7 @@
       "content": [
         {
           "type": "text",
-          "text": "npx @tiptap/cli init"
+          "text": "echo notex is awesome!\" "
         }
       ]
     },
@@ -395,7 +395,7 @@
       "content": [
         {
           "type": "text",
-          "text": "Make it your own"
+          "text": "Make it remarkable"
         }
       ]
     },
@@ -407,7 +407,7 @@
       "content": [
         {
           "type": "text",
-          "text": "Switch between light and dark modes, and tailor the editor's appearance with customizable CSS to match your style."
+          "text": "Switch between light and dark modes, to tailor your editor preference and match your style."
         }
       ]
     },
@@ -428,7 +428,7 @@
               "content": [
                 {
                   "type": "text",
-                  "text": "Test template"
+                  "text": "Check foo bar baz"
                 }
               ]
             }
@@ -452,14 +452,14 @@
                     {
                       "type": "link",
                       "attrs": {
-                        "href": "https://tiptap.dev/docs/ui-components/templates/simple-editor",
+                        "href": "#",
                         "target": "_blank",
                         "rel": "noopener noreferrer nofollow",
                         "class": null
                       }
                     }
                   ],
-                  "text": "Integrate the free template"
+                  "text": "Done to do: completed on Friday!"
                 }
               ]
             }

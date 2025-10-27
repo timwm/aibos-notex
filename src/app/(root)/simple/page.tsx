@@ -1,9 +1,4 @@
-import { Toaster } from "sonner";
-
 import { SimpleEditor } from "~/components/tiptap-templates/simple/simple-editor";
-import { AppSidebar } from "~/components/app-sidebar";
-import { SidebarProvider } from "~/components/ui/sidebar";
-import { MobileNav } from "~/components/mobile-nav";
 
 import { MainHeader } from "../components/main-header";
 
@@ -11,7 +6,7 @@ export default function Page() {
   return (
     <>
       <main className="relative w-fit overflow-hidden dark:bg-neutral-950 dark:text-neutral-200">
-      {/* <SidebarProvider defaultOpen={false}>
+        {/* <SidebarProvider defaultOpen={false}>
         <AppSidebar />
           {/* <div className="w-full max-w-full overflow-hidden">
             <div className="w-full max-w-full overflow-x-auto overscroll-x-contain scroll-smooth">
@@ -27,12 +22,12 @@ export default function Page() {
               </ul>
             </div>
           </div> */}
-          {/* {children} */}
-          {/* <div className="overflow-hidden"> */}
-          <SimpleEditor />
-          {/* </div> */}
-          </main>
-        {/* </main>
+        {/* {children} */}
+        {/* <div className="overflow-hidden"> */}
+        <SimpleEditor />
+        {/* </div> */}
+      </main>
+      {/* </main>
         <Toaster />
       </SidebarProvider>
       <MobileNav /> */}

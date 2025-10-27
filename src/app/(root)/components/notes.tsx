@@ -15,7 +15,6 @@ type Props = {
 export const Notes = async ({ className, isArchive }: Props) => {
   const { error, user } = await getUserSession();
   const notes = error ? [] : await getAllNotes(user);
-  console.log("notes::", { error, user, notes })
 
   let filteredNotes: NotesWithTags[];
 
